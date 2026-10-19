@@ -175,7 +175,7 @@ export default function ReviewLaunch() {
           </div>
 
           {/* Launch card */}
-          <aside className="flex w-[384px] shrink-0 flex-col self-start overflow-hidden rounded-card bg-white shadow-panel">
+          <aside className="sticky top-[88px] self-start max-h-[calc(100vh-112px)] overflow-y-auto overscroll-contain [scrollbar-width:thin] flex w-[384px] shrink-0 flex-col rounded-card bg-white shadow-panel">
             <div className="flex flex-col gap-6 p-6">
               <div className="text-[16px] font-semibold leading-5 tracking-[-0.01em] text-ink">Launch</div>
               <div className="flex flex-col gap-2">

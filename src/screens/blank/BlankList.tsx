@@ -222,7 +222,7 @@ const WHERE = [
 function ListSummary({ list }: { list: ListItem }) {
   const faces = [FACES.ananya, FACES.daniel, FACES.kenji, FACES.meera, FACES.sofia]
   return (
-    <div className={cn('flex w-[400px] shrink-0 flex-col rounded-card bg-white', panelShadow)}>
+    <div className={cn('sticky top-[88px] self-start max-h-[calc(100vh-112px)] overflow-y-auto overscroll-contain [scrollbar-width:thin] flex w-[400px] shrink-0 flex-col rounded-card bg-white', panelShadow)}>
       <div className="flex flex-col gap-[14px] px-6 py-5">
         <div className="flex flex-col gap-0.5">
           <span className="text-[16px] font-semibold leading-5 text-ink">{list.name}</span>
@@ -359,7 +359,7 @@ function TriggerTab() {
         ))}
       </div>
 
-      <div className={cn('flex w-[400px] shrink-0 flex-col rounded-card bg-white', panelShadow)}>
+      <div className={cn('sticky top-[88px] self-start max-h-[calc(100vh-112px)] overflow-y-auto overscroll-contain [scrollbar-width:thin] flex w-[400px] shrink-0 flex-col rounded-card bg-white', panelShadow)}>
         <div className="flex flex-col gap-1 px-6 pb-4 pt-5">
           <span className="text-[16px] font-semibold leading-5 text-ink">{signal.title}</span>
           <span className="text-[13px] leading-[18px] text-grey-2">Narrow it down, then they join as it happens</span>
@@ -497,7 +497,7 @@ function GiftyTab() {
         </div>
       </div>
 
-      <div className={cn('flex w-[400px] shrink-0 flex-col rounded-card bg-white', panelShadow)}>
+      <div className={cn('sticky top-[88px] self-start max-h-[calc(100vh-112px)] overflow-y-auto overscroll-contain [scrollbar-width:thin] flex w-[400px] shrink-0 flex-col rounded-card bg-white', panelShadow)}>
         <div className="flex flex-col gap-3 px-6 py-5">
           <div className="flex items-baseline gap-2">
             <span className="text-[28px] font-semibold leading-8 tracking-[-0.02em] text-ink">64</span>

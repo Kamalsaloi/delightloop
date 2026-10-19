@@ -43,7 +43,7 @@ export default function BlankPeople() {
           />
         </div>
 
-        <div className="flex w-[360px] shrink-0 flex-col gap-4">
+        <div className="sticky top-[88px] self-start max-h-[calc(100vh-112px)] overflow-y-auto overscroll-contain [scrollbar-width:thin] flex w-[360px] shrink-0 flex-col gap-4">
           {s.profilePerson ? (
             <ProfilePanel
               key={s.profilePerson.slug}

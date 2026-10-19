@@ -8,7 +8,7 @@ const NAV = ['Campaigns', 'Audiences', 'Gift gallery', 'Reports'] as const
 /** Top app bar for non-builder pages (Home). */
 export function AppHeader({ active = 'Campaigns' }: { active?: (typeof NAV)[number] }) {
   return (
-    <header className="flex h-16 shrink-0 items-center justify-between border-b border-line bg-white px-12">
+    <header className="sticky top-0 z-40 flex h-16 shrink-0 items-center justify-between border-b border-line bg-white px-12">
       <div className="flex items-center gap-8">
         <Link to="/home" className="flex items-center gap-2">
           <Logo />

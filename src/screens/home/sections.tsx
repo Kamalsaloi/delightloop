@@ -1,4 +1,4 @@
-import { useState, type ReactNode } from 'react'
+import type { ReactNode } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
 import { LinkedInMark } from '@/components/ui'
 import { GIFT } from '@/lib/assets'
@@ -13,7 +13,6 @@ import {
   PlusIcon,
   Stat,
   StatRow,
-  VIOLET_BTN,
   WHITE_BTN,
 } from './parts'
 
@@ -22,13 +21,11 @@ const DRAFT_SHADOW = 'shadow-[0_0_0_1px_#EBEBE8,0_1px_2px_#1112160A,0_8px_24px_#
 // ── Gifty spotted ───────────────────────────────────────────────────────────
 
 export function GiftySpotted({ suggestions }: { suggestions: Suggestion[] }) {
-  const [hovered, setHovered] = useState<number | null>(null)
-  const active = hovered ?? 0
-
   return (
     <section className="flex flex-col gap-5 rounded-[24px] bg-white p-6 shadow-card">
       <div className="flex items-center justify-between">
         <div className="flex items-center gap-2.5">
+          <GiftyMark />
           <h2 className="text-[16px] font-semibold leading-5 text-ink">Gifty spotted</h2>
           <span className="text-[13px] leading-4 text-grey-3">3 loops worth starting, from your CRM, LinkedIn and call notes</span>
         </div>
@@ -40,62 +37,76 @@ export function GiftySpotted({ suggestions }: { suggestions: Suggestion[] }) {
           </Link>
         </div>
       </div>
-      <div className="flex gap-6" onMouseLeave={() => setHovered(null)}>
+      <div className="flex gap-6">
         {suggestions.map((s, i) => (
-          <SuggestionCard key={s.id} s={s} active={i === active} onHover={() => setHovered(i)} />
+          <SuggestionCard key={s.id} s={s} top={i === 0} />
         ))}
       </div>
     </section>
   )
 }
 
-function SourceMark({ source }: { source: Suggestion['source'] }) {
-  if (source === 'linkedin') return <LinkedInMark size={14} radius={3} />
-  if (source === 'hubspot') return <HubDot />
-  return <CalendarIcon />
+function GiftyMark() {
+  return (
+    <svg width="20" height="20" viewBox="0 0 20 20" fill="none" className="shrink-0" aria-hidden>
+      <rect x="3.2" y="8.6" width="13.6" height="8.4" rx="1.6" stroke="#6559F7" strokeWidth="1.6" />
+      <rect x="2.2" y="5.6" width="15.6" height="3" rx="1" fill="#EFECFF" stroke="#6559F7" strokeWidth="1.6" />
+      <path d="M10 5.6V17" stroke="#6559F7" strokeWidth="1.6" />
+      <path d="M10 5.6C9.6 4.2 8.4 2.6 6.9 2.9 5.4 3.2 5.7 5.6 7.6 5.6H10ZM10 5.6C10.4 4.2 11.6 2.6 13.1 2.9 14.6 3.2 14.3 5.6 12.4 5.6H10Z" stroke="#6559F7" strokeWidth="1.6" strokeLinejoin="round" />
+    </svg>
+  )
 }
 
-function SuggestionCard({ s, active, onHover }: { s: Suggestion; active: boolean; onHover: () => void }) {
+function SourceMark({ source, onViolet }: { source: Suggestion['source']; onViolet?: boolean }) {
+  if (source === 'linkedin') return <LinkedInMark size={14} radius={3} />
+  if (source === 'hubspot') return <HubDot />
+  return <CalendarIcon color={onViolet ? 'rgba(255,255,255,0.78)' : undefined} />
+}
+
+function SuggestionCard({ s, top }: { s: Suggestion; top: boolean }) {
   const navigate = useNavigate()
-  const whenClass = s.source === 'moment' ? 'font-medium text-amber-text' : 'text-grey-3'
+  let whenClass = 'text-grey-3'
+  if (top) whenClass = 'font-semibold text-white'
+  else if (s.source === 'moment') whenClass = 'font-medium text-amber-text'
 
   return (
     <div
-      onMouseEnter={onHover}
       onClick={() => navigate('/loop/audience')}
       className={cn(
-        'flex min-w-0 flex-1 basis-0 cursor-pointer flex-col rounded-[20px] transition-[background-color,box-shadow] duration-150',
-        active ? 'bg-white shadow-[0_0_0_1.5px_#6559F7,0_12px_32px_-16px_#6559F759]' : 'bg-[#F7F7F5]',
+        'group flex min-w-0 flex-1 basis-0 cursor-pointer flex-col rounded-[20px] transition-[background-color,box-shadow,transform] duration-150',
+        top
+          ? 'bg-violet shadow-[inset_0_0_0_1px_#5547E6,inset_0_1px_0_rgba(255,255,255,0.18),0_16px_36px_-16px_rgba(101,89,247,0.55)] hover:-translate-y-0.5'
+          : 'bg-[#F7F7F5] hover:bg-white hover:shadow-[0_0_0_1px_#EBEBE8,0_12px_32px_-16px_#11121633]',
       )}
     >
       <div className="flex flex-col gap-3.5 px-5 pb-4 pt-5">
         <div className="flex items-center justify-between">
           <div className="flex items-center gap-1.5">
-            <SourceMark source={s.source} />
-            <span className="text-[12.5px] leading-4 text-grey-1">{s.sourceLabel}</span>
+            <SourceMark source={s.source} onViolet={top} />
+            <span className={cn('text-[12.5px] leading-4', top ? 'text-white/80' : 'text-grey-1')}>{s.sourceLabel}</span>
           </div>
           <span className={cn('text-[12.5px] leading-4', whenClass)}>{s.when}</span>
         </div>
         <div className="flex flex-col gap-1.5">
-          <h3 className="text-[17px] font-semibold leading-[22px] tracking-[-0.01em] text-ink">{s.title}</h3>
-          <p className="text-[13px] leading-[19px] text-grey-2">{s.body}</p>
+          <h3 className={cn('text-[17px] font-semibold leading-[22px] tracking-[-0.01em]', top ? 'text-white' : 'text-ink')}>{s.title}</h3>
+          <p className={cn('text-[13px] leading-[19px]', top ? 'text-white/80' : 'text-grey-2')}>{s.body}</p>
         </div>
         <div className="flex items-center gap-2.5">
-          <FaceStack ids={s.faces} />
-          <span className="text-[12.5px] leading-4 text-grey-1">{s.reach}</span>
+          <FaceStack ids={s.faces} ring={top ? '#6559F7' : '#FFFFFF'} />
+          <span className={cn('text-[12.5px] leading-4', top ? 'text-white/80' : 'text-grey-1')}>{s.reach}</span>
         </div>
       </div>
       <div
         className={cn(
           'flex items-center gap-2.5 rounded-b-[20px] border-t px-5 py-3',
-          active ? 'border-line-soft bg-[#FBFBFA]' : 'border-line',
+          top ? 'border-white/15 bg-white/[0.08]' : 'border-line',
         )}
       >
-        <span className="flex-1 basis-0 text-[12px] leading-4 text-grey-3">{s.steps}</span>
-        {active ? (
-          <span className={cn(VIOLET_BTN, 'h-8 gap-1.5 rounded-[9px] px-3 text-[12.5px] font-semibold leading-4')}>
+        <span className={cn('flex-1 basis-0 text-[12px] leading-4', top ? 'text-white/70' : 'text-grey-3')}>{s.steps}</span>
+        {top ? (
+          <span className="flex h-8 cursor-pointer items-center gap-1.5 rounded-[9px] bg-white px-3 text-[12.5px] font-semibold leading-4 text-[#4B3FD9] shadow-[0_1px_2px_rgba(17,18,22,0.15)] transition-colors hover:bg-[#F6F5FE]">
             View the loop
-            <ArrowIcon size={12} color="#FFFFFF" />
+            <ArrowIcon size={12} color="#4B3FD9" />
           </span>
         ) : (
           <span className={cn(WHITE_BTN, 'h-8 rounded-[9px] px-3 text-[12.5px] font-medium leading-4')}>View the loop</span>

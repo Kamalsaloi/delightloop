@@ -41,7 +41,7 @@ export function BuilderHeader({
 }: Props) {
   const navigate = useNavigate()
   return (
-    <header className={cn('flex h-16 shrink-0 items-center justify-between border-b border-line bg-white px-12', className)}>
+    <header className={cn('sticky top-0 z-40 flex h-16 shrink-0 items-center justify-between border-b border-line bg-white px-12', className)}>
       <div className="flex items-center gap-4">
         <Link to="/home">
           <Logo />

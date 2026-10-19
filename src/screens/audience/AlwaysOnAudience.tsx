@@ -111,7 +111,7 @@ export default function AlwaysOnAudience() {
           </div>
         </div>
 
-        <div className="flex w-[360px] shrink-0 flex-col gap-4">
+        <div className="sticky top-[88px] self-start max-h-[calc(100vh-112px)] overflow-y-auto overscroll-contain [scrollbar-width:thin] flex w-[360px] shrink-0 flex-col gap-4">
           {profilePerson ? (
             <ProfilePanel key={profilePerson.slug} person={profilePerson} backLabel="Pacing" position={`${MATCHES.findIndex((m) => m.slug === profilePerson.slug) + 1} of 6`} onClose={() => setProfile(null)} />
           ) : (

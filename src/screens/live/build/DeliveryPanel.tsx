@@ -43,7 +43,7 @@ export function DeliveryPanel({ fix, onFix, swapUndone, onToggleSwap, onClose }:
   }, [onClose])
 
   return (
-    <aside className="fixed right-12 top-[88px] z-30 flex max-h-[calc(100vh-112px)] w-[384px] flex-col overflow-y-auto overflow-x-clip rounded-[20px] bg-white shadow-[0_0_0_1px_#EBEBE8,0_1px_2px_#1112160A,0_20px_48px_-24px_#1112162E]">
+    <aside data-scroll-panel className="fixed overscroll-contain right-12 top-[88px] z-30 flex max-h-[calc(100vh-112px)] w-[384px] flex-col overflow-y-auto overflow-x-clip rounded-[20px] bg-white shadow-[0_0_0_1px_#EBEBE8,0_1px_2px_#1112160A,0_20px_48px_-24px_#1112162E]">
       <ProgressHeader onClose={onClose} />
       {fix ? (
         <Section title="You handled" gap={16} divided>

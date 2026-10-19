@@ -35,11 +35,11 @@ export function PlusIcon({ color = '#111216' }: { color?: string }) {
   )
 }
 
-export function CalendarIcon() {
+export function CalendarIcon({ color = '#55575F' }: { color?: string }) {
   return (
     <svg width="14" height="14" viewBox="0 0 16 16" className="shrink-0">
-      <rect x="2.5" y="3.5" width="11" height="10" rx="2" fill="none" stroke="#55575F" strokeWidth="1.4" />
-      <path d="M2.5 6.5h11M5.5 2v3M10.5 2v3" fill="none" stroke="#55575F" strokeWidth="1.4" strokeLinecap="round" />
+      <rect x="2.5" y="3.5" width="11" height="10" rx="2" fill="none" stroke={color} strokeWidth="1.4" />
+      <path d="M2.5 6.5h11M5.5 2v3M10.5 2v3" fill="none" stroke={color} strokeWidth="1.4" strokeLinecap="round" />
     </svg>
   )
 }
@@ -65,11 +65,11 @@ export function Stat({ value, label, valueClass }: { value: ReactNode; label: st
 }
 
 /** 24px faces, 20px apart, white 2px halo (outside the photo, as in Paper). */
-export function FaceStack({ ids }: { ids: string[] }) {
+export function FaceStack({ ids, ring = '#FFFFFF' }: { ids: string[]; ring?: string }) {
   return (
     <div className="relative h-7 w-16 shrink-0">
       {ids.map((id, i) => (
-        <Photo key={id + i} id={id} className="absolute top-0.5 h-6 w-6 rounded-full shadow-[0_0_0_2px_#FFFFFF]" style={{ left: i * 20 }} />
+        <Photo key={id + i} id={id} className="absolute top-0.5 h-6 w-6 rounded-full" style={{ left: i * 20, boxShadow: `0 0 0 2px ${ring}` }} />
       ))}
     </div>
   )
