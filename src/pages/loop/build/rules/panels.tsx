@@ -220,7 +220,7 @@ export function ReviewPanel({
 
 // ── E · Turning a rule off ──────────────────────────────────────────────────
 
-export function OffPanel({ state, onClose, onUndo }: { state: RulesState; onClose: () => void; onUndo: (id: string) => void }) {
+export function OffPanel({ state, onClose, onUndo, onEmailsOnly }: { state: RulesState; onClose: () => void; onUndo: (id: string) => void; onEmailsOnly: (id: string) => void }) {
   const onCount = state.rules.filter((r) => state.on[r.id] !== false).length
   const amberBtn =
     'flex h-8 cursor-pointer items-center gap-1.5 rounded-[8px] bg-white px-3 text-[12.5px] leading-4 text-[#7A4A00] shadow-[inset_0_0_0_1px_#EBC98A,0_1px_2px_#7A4A0014] hover:bg-[#FFFBF3]'
@@ -240,7 +240,7 @@ export function OffPanel({ state, onClose, onUndo }: { state: RulesState; onClos
                       {RG.undo()}
                       Undo
                     </button>
-                    <button type="button" onClick={() => onUndo(r.id)} className={cn(amberBtn, 'font-medium')}>
+                    <button type="button" onClick={() => onEmailsOnly(r.id)} className={cn(amberBtn, 'font-medium')}>
                       {RG.mail()}
                       Only stop the emails
                     </button>

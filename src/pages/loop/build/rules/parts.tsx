@@ -191,7 +191,7 @@ function StepPill({ n, label, state, onClick }: { n: number; label: string; stat
           'flex h-4 w-4 shrink-0 items-center justify-center rounded-full text-[10px] font-bold leading-3',
           active && 'bg-violet text-white',
           state === 'pending' && 'bg-fill text-grey-3',
-          state === 'done' && 'bg-ink',
+          state === 'done' && 'bg-green',
         )}
       >
         {state === 'done' ? RG.check(9, 2.4) : n}

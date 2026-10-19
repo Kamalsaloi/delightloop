@@ -15,6 +15,10 @@ export type Person = {
   noAddress?: boolean
   notOnLinkedIn?: boolean
   customer?: boolean
+  /** Left the company since the list was built (Gifty checked LinkedIn). */
+  left?: boolean
+  /** Why Gifty couldn't pin down an address, and what it found. */
+  addressHint?: { note: string; options?: { id: string; title: string; sub: string }[]; waitingOn?: string; remote?: boolean }
   /** "What Gifty knows" column (03c). */
   knows?: { headline: string; source: Source; detail: string }
 }
@@ -69,6 +73,13 @@ export const PEOPLE: Person[] = [
     initials: 'MS',
     noAddress: true,
     customer: true,
+    addressHint: {
+      note: 'Orbital has two offices and her profile doesn’t say which. Pick one.',
+      options: [
+        { id: 'Indiranagar office, Bengaluru', title: 'Indiranagar office, Bengaluru', sub: 'Where the sales team sits, from 4 team posts' },
+        { id: 'BKC head office, Mumbai', title: 'BKC head office, Mumbai', sub: 'Registered address' },
+      ],
+    },
     knows: { headline: 'Back from leave last week', source: 'linkedin', detail: 'Shared Orbital’s Diwali card in 2025' },
   },
   {
@@ -89,6 +100,7 @@ export const PEOPLE: Person[] = [
     face: FACES.tom,
     initials: 'TB',
     noAddress: true,
+    addressHint: { note: 'Fully remote, and no home address anywhere public.', remote: true },
     knows: { headline: 'Promoted from Director in October', source: 'linkedin', detail: 'Fully remote, posts from Lisbon' },
   },
   {
@@ -99,6 +111,7 @@ export const PEOPLE: Person[] = [
     face: FACES.ethan,
     initials: 'EB',
     noAddress: true,
+    addressHint: { note: 'Too new for Gifty to find. You asked Rahul, his account owner, on Slack an hour ago.', waitingOn: 'Rahul' },
     knows: { headline: 'Joined Larkspur last week', source: 'linkedin', detail: 'Moved over from Orbital' },
   },
   {

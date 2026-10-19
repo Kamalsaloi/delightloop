@@ -18,3 +18,8 @@ export const GIFT = {
   g5: '01M57TX8JC2T89E2MKZPZJ1DBJ',
   g6: '01M57TX8JDS6QN414TVTM0GMCM',
 } as const
+
+/** Plain postcard stock. */
+export const CREAM = '#EDE7DD'
+/** A postcard design: Paper asset id, uploaded data URL, or null for plain cream. */
+export const designUrl = (d: string | null | undefined) => (d ? (d.startsWith('data:') ? d : asset(d)) : null)

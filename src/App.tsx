@@ -1,23 +1,37 @@
-import { Suspense } from 'react'
+import { useEffect } from 'react'
 import { BrowserRouter, Navigate, Route, Routes } from 'react-router-dom'
-import { SCREENS } from './screens/registry'
-import ScreenIndex from './screens/ScreenIndex'
-import { ScrollToTop } from './screens/ScrollToTop'
+import { Toaster } from '@/components/shell'
+import Home from '@/pages/home/Home'
+import LoopRoute from '@/pages/loop/LoopRoute'
+import { useStore } from '@/store/store'
+
+/** Drives the demo clock and the simulated approvals while the app is open. */
+function useSimulation() {
+  useEffect(() => {
+    let last = performance.now()
+    const id = window.setInterval(() => {
+      const now = performance.now()
+      const dt = Math.min(1000, now - last)
+      last = now
+      const s = useStore.getState()
+      s.tick(dt)
+      s.resolvePending(false)
+    }, 250)
+    return () => window.clearInterval(id)
+  }, [])
+}
 
 export default function App() {
+  useSimulation()
   return (
     <BrowserRouter>
-      <ScrollToTop />
-      <Suspense fallback={null}>
-        <Routes>
-          <Route path="/" element={<ScreenIndex />} />
-          {SCREENS.filter((x) => x.path && x.Component).map(({ path, Component }) => {
-            const C = Component!
-            return <Route key={path} path={path} element={<C />} />
-          })}
-          <Route path="*" element={<Navigate to="/" replace />} />
-        </Routes>
-      </Suspense>
+      <Routes>
+        <Route path="/" element={<Home />} />
+        <Route path="/loops/:id/:section" element={<LoopRoute />} />
+        <Route path="/loops/:id" element={<LoopRoute />} />
+        <Route path="*" element={<Navigate to="/" replace />} />
+      </Routes>
+      <Toaster />
     </BrowserRouter>
   )
 }

@@ -1,6 +1,6 @@
 import type { ReactNode } from 'react'
 import { GmailTile } from '@/components/ui'
-import { asset, FACE, GIFT } from '@/lib/assets'
+import { asset, CREAM, designUrl, FACE, GIFT } from '@/lib/assets'
 import { cn } from '@/lib/cn'
 import { G } from './glyphs'
 
@@ -17,12 +17,13 @@ export function LinkedInTile({ size = 40 }: { size?: number }) {
   )
 }
 
-/** Postcard thumbnail, 56×40. */
-export function PostcardThumb({ id = GIFT.postcard }: { id?: string }) {
+/** Postcard thumbnail, 56×40. `design`: asset id or data URL; null = plain cream card. */
+export function PostcardThumb({ design = GIFT.postcard }: { design?: string | null }) {
+  const src = designUrl(design)
   return (
     <span
       className="h-10 w-14 shrink-0 rounded-[8px] bg-cover bg-center shadow-[0_0_0_1px_#EBEBE8]"
-      style={{ backgroundImage: `url(${asset(id)})` }}
+      style={src ? { backgroundImage: `url(${src})` } : { backgroundColor: CREAM }}
     />
   )
 }
