@@ -75,11 +75,11 @@ function SuggestionCard({ s, top }: { s: Suggestion; top: boolean }) {
       className={cn(
         'group flex min-w-0 flex-1 basis-0 cursor-pointer flex-col rounded-[20px] transition-[background-color,box-shadow,transform] duration-150',
         top
-          ? 'bg-violet shadow-[inset_0_0_0_1px_#5547E6,inset_0_1px_0_rgba(255,255,255,0.18),0_16px_36px_-16px_rgba(101,89,247,0.55)] hover:-translate-y-0.5'
+          ? 'relative overflow-hidden bg-violet shadow-[inset_0_0_0_1px_#5547E6,inset_0_1px_0_rgba(255,255,255,0.18),0_16px_36px_-16px_rgba(101,89,247,0.55)] duration-200 ease-out hover:-translate-y-1 hover:bg-[#6B60F8] hover:shadow-[inset_0_0_0_1px_#5547E6,inset_0_1px_0_rgba(255,255,255,0.24),0_24px_48px_-18px_rgba(101,89,247,0.7)]'
           : 'bg-[#F7F7F5] hover:bg-white hover:shadow-[0_0_0_1px_#EBEBE8,0_12px_32px_-16px_#11121633]',
       )}
     >
-      <div className="flex flex-col gap-3.5 px-5 pb-4 pt-5">
+      <div className="relative flex flex-col gap-3.5 px-5 pb-4 pt-5">
         <div className="flex items-center justify-between">
           <div className="flex items-center gap-1.5">
             <SourceMark source={s.source} onViolet={top} />
@@ -98,7 +98,7 @@ function SuggestionCard({ s, top }: { s: Suggestion; top: boolean }) {
       </div>
       <div
         className={cn(
-          'flex items-center gap-2.5 rounded-b-[20px] border-t px-5 py-3',
+          'relative flex items-center gap-2.5 rounded-b-[20px] border-t px-5 py-3',
           top ? 'border-white/15 bg-white/[0.08]' : 'border-line',
         )}
       >
@@ -106,7 +106,9 @@ function SuggestionCard({ s, top }: { s: Suggestion; top: boolean }) {
         {top ? (
           <span className="flex h-8 cursor-pointer items-center gap-1.5 rounded-[9px] bg-white px-3 text-[12.5px] font-semibold leading-4 text-[#4B3FD9] shadow-[0_1px_2px_rgba(17,18,22,0.15)] transition-colors hover:bg-[#F6F5FE]">
             View the loop
-            <ArrowIcon size={12} color="#4B3FD9" />
+            <span className="transition-transform duration-200 ease-out group-hover:translate-x-0.5">
+              <ArrowIcon size={12} color="#4B3FD9" />
+            </span>
           </span>
         ) : (
           <span className={cn(WHITE_BTN, 'h-8 rounded-[9px] px-3 text-[12.5px] font-medium leading-4')}>View the loop</span>
