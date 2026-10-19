@@ -486,7 +486,7 @@ export function PostcardPanel({ loop, node, onClose }: Props<'postcard'>) {
         <KitHeader
           media={<span className="block h-10 w-[52px] shrink-0 rounded-[8px] bg-cover bg-center" style={src ? { backgroundImage: `url(${src})` } : { backgroundColor: CREAM }} />}
           title={d.title}
-          subtitle={`${d.kind === 'letter' ? 'Letter' : 'Postcard'} · lands ${fmtDay(land1)} to ${fmtDay(land2)}`}
+          subtitle={`${d.kind === 'letter' ? 'Letter' : 'Postcard'} · lands ${fmtDay(land1)} to ${new Date(land2).getDate()} ${new Date(land2).toLocaleDateString('en-GB', { month: 'short' })}`}
           onClose={onClose}
         />
       }

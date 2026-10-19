@@ -17,7 +17,26 @@ function useSimulation() {
       s.tick(dt)
       s.resolvePending(false)
     }, 250)
-    return () => window.clearInterval(id)
+    // Demo shortcuts (also in the avatar menu): ⌥⇧R approvals, ⌥⇧D skip a day, ⌥⇧E end this loop, ⌥⇧1/2/3 speed.
+    function onKey(e: KeyboardEvent) {
+      if (!e.altKey || !e.shiftKey) return
+      const s = useStore.getState()
+      const loopId = window.location.pathname.match(/^\/loops\/([^/]+)/)?.[1]
+      const speeds: Record<string, number> = { Digit1: 1, Digit2: 4, Digit3: 10 }
+      if (e.code === 'KeyR') s.resolvePending(true)
+      else if (e.code === 'KeyD') s.skipDay()
+      else if (e.code === 'KeyE' && loopId) s.endNow(loopId)
+      else if (speeds[e.code]) {
+        s.setSpeed(speeds[e.code])
+        s.toast(`Demo speed ${speeds[e.code]}×`)
+      } else return
+      e.preventDefault()
+    }
+    window.addEventListener('keydown', onKey)
+    return () => {
+      window.clearInterval(id)
+      window.removeEventListener('keydown', onKey)
+    }
   }, [])
 }
 

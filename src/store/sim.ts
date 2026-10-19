@@ -332,7 +332,7 @@ function schedule(loop: Loop): Event[] {
   add('end', days.end, (c) => {
     c.loop = { ...c.loop, status: 'finished' }
     c.live.summary = summarize(c.loop, c.live)
-    c.notes.push({ text: `${c.loop.name} finished with ${c.live.counts.booked} meetings`, to: results(c.loop), label: 'See what worked' })
+    c.notes.push({ text: `${c.loop.name} finished with ${c.live.counts.booked} ${c.live.counts.booked === 1 ? 'meeting' : 'meetings'}`, to: results(c.loop), label: 'See what worked' })
   })
   return ev
 }

@@ -137,8 +137,8 @@ export function Canvas({ loop, graph, mode, selectedId, onSelect, panelOpen, dra
     const left = x >= 0 ? x + 176 : x - 176 - 368
     if (vp.view.s < 0.9) {
       const { w, h } = vp.size()
-      vp.set({ s: 1, x: w / 2 - (left + 184), y: h / 2 - y }, true)
-    } else vp.ensureVisible({ x: left, y: y - 60, w: 368, h: 460 }, 0, 24)
+      vp.set({ s: 1, x: w / 2 - (left + 184), y: Math.min(h / 2 - y, 120 - y) }, true)
+    } else vp.ensureVisible({ x: left, y: y - 60, w: 368, h: 640 }, 0, 24)
   }
 
   function pick(id: string, values: Record<string, number>) {
@@ -311,7 +311,9 @@ export function Canvas({ loop, graph, mode, selectedId, onSelect, panelOpen, dra
                 <div
                   data-ui
                   className={cn(
-                    'absolute right-full top-1/2 -translate-y-1/2 pr-4 transition-opacity duration-150',
+                    'absolute top-1/2 -translate-y-1/2 transition-opacity duration-150',
+                    // Right-hand branch cards keep their toolbar on the outside edge.
+                    b.inBranch && b.x > 0 ? 'left-full pl-4' : 'right-full pr-4',
                     b.id === selectedId ? 'opacity-100' : 'pointer-events-none opacity-0 group-hover/node:pointer-events-auto group-hover/node:opacity-100',
                   )}
                 >

@@ -1,5 +1,5 @@
 // The gift step: Gifty's picks, addresses, the card note, a gift's detail, everyone, and swapping one person.
-import { useMemo, useState, type ReactNode } from 'react'
+import { useEffect, useMemo, useState, type ReactNode } from 'react'
 import { createPortal } from 'react-dom'
 import { InspectorBack, InspectorClose, InspectorTabs, MiniButton, PanelLink, PanelSection, PanelSegmented, ProgressSplit, RowAction } from '@/components/canvas'
 import { G } from '@/components/canvas/glyphs'
@@ -533,8 +533,19 @@ export function SwapGiftModal({ person, current, onClose, onCommit }: { person: 
   const now = giftById(current)
   const choice = giftById(pick)
   const delta = now.price - choice.price
+  // Esc closes only the modal, not the gift panel underneath.
+  useEffect(() => {
+    function onKey(e: KeyboardEvent) {
+      if (e.key !== 'Escape') return
+      e.preventDefault()
+      e.stopPropagation()
+      onClose()
+    }
+    window.addEventListener('keydown', onKey, true)
+    return () => window.removeEventListener('keydown', onKey, true)
+  }, [onClose])
   return (
-    <div className="fixed inset-0 z-[60] flex items-center justify-center" onKeyDown={(e) => e.key === 'Escape' && onClose()}>
+    <div className="fixed inset-0 z-[60] flex items-center justify-center">
       <div className="absolute inset-0 animate-[fade_.15s_ease-out] bg-[#11121652]" onClick={onClose} />
       <div role="dialog" aria-modal className="relative flex w-[600px] shrink-0 animate-[fade_.15s_ease-out] flex-col overflow-clip rounded-card bg-white shadow-[0_24px_64px_-24px_#11121673]">
         <div className="flex items-center justify-between px-6 pt-6">

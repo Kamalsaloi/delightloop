@@ -26,7 +26,6 @@ export function PausedCard({ loop, changes, discarded, onDiscard, onUndo }: { lo
           <span className="text-[12px] font-semibold leading-4 text-grey-1">Your changes</span>
           {changes.slice(0, 4).map((c) => (
             <div key={c.id + c.kind} className="flex items-center gap-2.5">
-              <span className={cn('h-1.5 w-1.5 shrink-0 rounded-full', c.kind === 'removed' ? 'bg-[#E5484D]' : 'bg-violet')} aria-hidden />
               <span className="flex-1 truncate text-[12.5px] font-medium leading-4 text-ink">{c.title}</span>
               <span className="text-[12px] leading-4 text-grey-3">{KIND[c.kind]}</span>
             </div>

@@ -239,7 +239,7 @@ function Storyboard({ loop, index, onIndex }: { loop: Loop; index: number; onInd
   const frames = flatten(loop.graph.steps).filter((n): n is StepNode => n.kind === 'step' && n.type !== 'wait' && n.type !== 'task').slice(0, 4)
   const gift = frames.find((n) => n.type === 'gift')
   const giftId = gift && gift.type === 'gift' ? giftAssignments(loop, gift.data)[p.slug] : undefined
-  const fill = (t: string) => t.replace(/\{company\}/g, p.company.split(' ')[0]).replace(/\{first name\}/g, first)
+  const fill = (t: string) => (/^[A-Z][a-z]/.test(t) ? t.charAt(0).toLowerCase() + t.slice(1) : t).replace(/\{company\}/g, p.company.split(' ')[0]).replace(/\{first name\}/g, first)
   const nav = 'flex h-8 w-8 shrink-0 cursor-pointer items-center justify-center rounded-[8px] bg-white shadow-[inset_0_0_0_1px_#E4E4E1,0_1px_2px_rgba(17,18,22,.05)] hover:bg-fill-hover disabled:cursor-default disabled:opacity-40'
 
   function body(n: StepNode): ReactNode {

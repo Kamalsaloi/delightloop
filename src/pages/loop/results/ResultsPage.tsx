@@ -509,7 +509,7 @@ function FinishedMain({ loop }: { loop: Loop }) {
   const s = loop.live!.summary!
   const outcomes: { value: string; label: string; sub: string; good?: boolean }[] = [
     { value: String(s.meetings), label: 'meetings booked', sub: s.meetings ? `1 in every ${Math.max(1, Math.round(s.reached / s.meetings))} people` : 'None this time', good: true },
-    { value: s.pipeline >= 1000 ? `$${Math.round(s.pipeline / 1000)}k` : money(s.pipeline), label: 'pipeline created', sub: `${s.meetings} deals in HubSpot` },
+    { value: s.pipeline >= 1000 ? `$${Math.round(s.pipeline / 1000)}k` : money(s.pipeline), label: 'pipeline created', sub: `${s.meetings} ${s.meetings === 1 ? 'deal' : 'deals'} in HubSpot` },
     { value: money(s.spent), label: 'spent on gifts and postcards', sub: s.meetings ? `${money(s.spent / s.meetings)} per meeting` : 'No meetings yet' },
     { value: money(s.left), label: 'left in the budget', sub: `${s.held} gifts never sent, they replied first` },
   ]

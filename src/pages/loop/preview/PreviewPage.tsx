@@ -23,6 +23,9 @@ type Li = Extract<StepNode, { type: 'linkedin' }>
 type Post = Extract<StepNode, { type: 'postcard' }>
 type GiftN = Extract<StepNode, { type: 'gift' }>
 
+/** A note that follows "Hi {name}," continues the sentence. */
+const cont = (t: string) => (/^[A-Z][a-z]/.test(t) && !/^(I|I’m|I'm)\b/.test(t) ? t.charAt(0).toLowerCase() + t.slice(1) : t)
+
 const BTN = 'flex h-10 shrink-0 cursor-pointer items-center gap-[7px] whitespace-nowrap rounded-[10px] px-4 text-[13px] leading-4 transition-colors disabled:cursor-not-allowed disabled:opacity-50'
 
 /** Replace merge fields with this person's values, highlighted. */
@@ -383,7 +386,7 @@ function DesktopDoc({ step, ctx, email, li, post, giftId }: DocProps) {
                     {li!.data.noteMode === 'note' ? (
                       li!.data.note ? (
                         <>
-                          Hi <Hl>{r.first}</Hl>, {fill(li!.data.note, r)}
+                          Hi <Hl>{r.first}</Hl>, {fill(cont(li!.data.note), r)}
                         </>
                       ) : (
                         <Empty what="note" />
@@ -622,7 +625,7 @@ function PhoneView({ step, ctx, email, li, post, giftId }: DocProps) {
               <div className="rounded-[12px] bg-[#F4F2EE] px-3.5 py-3 text-[14px] leading-[23px] text-[#33353C]">
                 {d.note ? (
                   <>
-                    Hi <Hl>{r.first}</Hl>, {fill(d.note, r)}
+                    Hi <Hl>{r.first}</Hl>, {fill(cont(d.note), r)}
                   </>
                 ) : (
                   <span className="text-grey-3">No note yet</span>

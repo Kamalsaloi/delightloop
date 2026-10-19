@@ -17,7 +17,10 @@ const DRAFT_SHADOW = 'shadow-[0_0_0_1px_#EBEBE8,0_1px_2px_#1112160A,0_8px_24px_#
 // ── Gifty spotted ───────────────────────────────────────────────────────────
 
 export function visibleSuggestions(all: Suggestion[], loops: Loop[]) {
-  return all.filter((s) => !s.after && !(s.usedBy && loops.some((l) => l.id === s.usedBy))).slice(0, 3)
+  // A moment is covered once a loop for it exists; follow-ups appear once that loop is live.
+  const covered = (id: string) => loops.some((l) => l.moment?.id === id || l.id === all.find((x) => x.id === id)?.usedBy)
+  const launched = (id: string) => loops.some((l) => l.moment?.id === id && l.status !== 'draft')
+  return all.filter((s) => (s.after ? launched(s.after) : !covered(s.id)) && !(s.usedBy && loops.some((l) => l.id === s.usedBy))).slice(0, 3)
 }
 
 /** Gifty-box mark in front of "Gifty spotted" (Paper HEB-0). */

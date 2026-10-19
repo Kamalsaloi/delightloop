@@ -440,7 +440,7 @@ function readAs(q: string): string[] {
   const out: string[] = []
   if (/head|vp|vice president|sales lead|cro/.test(t)) out.push(/cro/.test(t) ? 'CRO' : 'Head or VP of Sales')
   const stage = t.match(/series [a-d]/)
-  if (stage) out.push(`SaaS, ${stage[0].replace('series', 'Series')}`)
+  if (stage) out.push(`SaaS, Series ${stage[0].slice(-1).toUpperCase()}`)
   for (const [k, v] of [['india', 'India'], ['uk', 'UK'], ['us', 'US'], ['singapore', 'Singapore'], ['europe', 'Europe']] as const) if (new RegExp(`\\b${k}\\b`).test(t)) out.push(v)
   if (/hiring|sdr|aes?\b/.test(t)) out.push('Hiring sales roles in the last 60 days')
   if (/fintech|health|hr\b|logistics/.test(t)) out.push(t.match(/fintech|health|hr|logistics/)![0].replace(/^./, (c) => c.toUpperCase()))
@@ -454,7 +454,7 @@ function GiftyTab({ loopId }: { loopId: string }) {
   const [searching, setSearching] = useState(false)
   const [saveNew, setSaveNew] = useState(true)
   const ready = prompt.trim().length >= 10
-  const found = searched ? 40 + (searched.length % 30) : 0
+  const found = searched ? 40 + (searched.length % 25) : 0
   const inHub = Math.round(found * 0.34)
 
   function search() {
@@ -579,7 +579,7 @@ function GiftyTab({ loopId }: { loopId: string }) {
           <span className="text-[13.5px] font-medium leading-[18px] text-ink">Uses {found - inHub} of your 500 monthly lookups</span>
           <span className="text-[12.5px] leading-[17px] text-grey-3">People already in HubSpot are free</span>
         </div>
-        <PrimaryBlock onClick={() => chooseFound(loopId)} disabled={!searched} testId="use-found" label={searched ? `Use these ${found} people` : 'Use these people'} note="Next, Gifty checks roles, addresses and customers" />
+        <PrimaryBlock onClick={() => chooseFound(loopId, found)} disabled={!searched} testId="use-found" label={searched ? `Use these ${found} people` : 'Use these people'} note="Next, Gifty checks roles, addresses and customers" />
       </div>
     </div>
   )

@@ -58,7 +58,7 @@ type Actions = {
 
   chooseList: (id: string, listId: string) => void
   chooseSignal: (id: string, signal: Partial<SignalAudience>) => void
-  chooseFound: (id: string) => void
+  chooseFound: (id: string, count: number) => void
   clearAudience: (id: string) => void
   setSignal: (id: string, patch: Partial<SignalAudience>) => void
   setCustomers: (id: string, s: CheckState) => void
@@ -244,9 +244,12 @@ export const useStore = create<Store>()(
               },
             },
           })),
-        chooseFound: (id) => {
+        chooseFound: (id, count) => {
           get().chooseList(id, 'webinar')
-          audienceEdit(id, (a) => ({ ...a, title: 'Series B heads of sales', source: '64 people Gifty found, 22 already in HubSpot. Gifty checked every name.', pillSource: 'found by Gifty' }))
+          audienceEdit(id, (a) => {
+            const people = a.people.slice(0, count)
+            return { ...a, people, title: 'People Gifty found', source: `${people.length} people Gifty found, ${Math.round(people.length * 0.34)} already in HubSpot.`, pillSource: 'found by Gifty' }
+          })
         },
         clearAudience: (id) => patch(id, (l) => ({ ...l, kind: 'campaign', audience: { ...l.audience, kind: 'none' } })),
         setSignal: (id, p) => audienceEdit(id, (a) => (a.signal ? { ...a, signal: { ...a.signal, ...p } } : a)),

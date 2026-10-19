@@ -1,13 +1,23 @@
+import { lazy, Suspense, type ReactNode } from 'react'
 import { Navigate, useParams } from 'react-router-dom'
 import { useLoop } from '@/store/store'
-import AudiencePage from './audience/AudiencePage'
-import BuildPage from './build/BuildPage'
-import LaunchPage from './launch/LaunchPage'
-import PreviewPage from './preview/PreviewPage'
-import ResultsPage from './results/ResultsPage'
+
+// Each tab is its own chunk; Home stays in the main bundle.
+const AudiencePage = lazy(() => import('./audience/AudiencePage'))
+const BuildPage = lazy(() => import('./build/BuildPage'))
+const LaunchPage = lazy(() => import('./launch/LaunchPage'))
+const PreviewPage = lazy(() => import('./preview/PreviewPage'))
+const ResultsPage = lazy(() => import('./results/ResultsPage'))
+
+const Fallback = () => <div className="h-dvh bg-page" />
+const wrap = (node: ReactNode) => <Suspense fallback={<Fallback />}>{node}</Suspense>
 
 /** /loops/:id/:section. Sections that don't apply yet fall back to one that does. */
 export default function LoopRoute() {
+  return wrap(<Section />)
+}
+
+function Section() {
   const { id, section } = useParams()
   const loop = useLoop(id)
   if (!loop) return <Navigate to="/" replace />

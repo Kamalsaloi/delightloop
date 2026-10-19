@@ -268,6 +268,16 @@ export function suggestionFor(ctx: SlotContext): Suggestion {
       rows: [{ key: 'goal', label: 'Counts', choices: [{ label: 'Meeting booked' }, { label: 'Good reply' }, { label: 'Deal created' }], value: 0 }],
     }
   if (prevType === 'postcard') return giftSuggestion(ctx)
+  if (prevType === 'gift')
+    return {
+      id: 'message',
+      icon: SuggestIcon.linkedin(),
+      title: 'LinkedIn message when it lands',
+      subtitle: 'Ask how they liked it, no hard sell',
+      label: 'Gifty suggests',
+      tab: 'reach',
+      rows: [],
+    }
   if (prevType === 'merge' || prevType === 'linkedin' || prevType === 'bump' || prevType === 'wait')
     return {
       id: 'postcard',

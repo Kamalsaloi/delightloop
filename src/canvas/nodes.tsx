@@ -137,7 +137,7 @@ export function stepCard(n: StepNode, ctx: NodeCtx): Omit<StepCardProps, 'select
         ) : (
           <>
             {off > 0 && <StepChip tone="amber">{off} have no profile</StepChip>}
-            <FooterNote>{n.data.fallback === 'email' ? 'They get an email' : 'Skipped for them'}</FooterNote>
+            {!(needsCopy(n) && !running) && !ctx.changed.has(n.id) && <FooterNote>{n.data.fallback === 'email' ? 'They get an email' : 'Skipped for them'}</FooterNote>}
             {editedChip(ctx, n)}
           </>
         ),
@@ -156,7 +156,7 @@ export function stepCard(n: StepNode, ctx: NodeCtx): Omit<StepCardProps, 'select
         icon: <PostcardThumb design={n.data.design} />,
         title: n.data.title,
         titleAdornment: rule && !rule.emailsOnly ? <RuleMarker /> : undefined,
-        subtitle: n.data.kind === 'letter' ? `Handwritten, signed by ${teammate(loop.senderId).first}` : `Postcard, signed by ${teammate(loop.senderId).first}`,
+        subtitle: `${n.data.kind === 'letter' ? 'Letter' : 'Postcard'}, signed by ${teammate(loop.senderId).first}`,
         footerLeft: (
           <>
             <StepChip>Lands {lands}</StepChip>
@@ -183,7 +183,7 @@ export function stepCard(n: StepNode, ctx: NodeCtx): Omit<StepCardProps, 'select
         icon: <GiftStack ids={n.data.picks.map((p) => giftById(p.giftId).img)} />,
         title: n.data.title,
         titleAdornment: rule && n.data.kind === 'gift' && !rule.emailsOnly ? <RuleMarker /> : undefined,
-        subtitle: n.data.kind === 'giftcard' ? 'Gift card, no address needed' : `One per person${n.data.noteOn ? ', with a card' : ''}`,
+        subtitle: n.data.kind === 'giftcard' ? 'No address needed' : 'One per person',
         footerLeft: (
           <>
             <StepChip>{range}</StepChip>

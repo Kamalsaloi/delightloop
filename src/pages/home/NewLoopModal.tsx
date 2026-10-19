@@ -270,7 +270,7 @@ function Modal({ shown, onClose }: { shown: boolean; onClose: () => void }) {
               />
             </div>
             <div className="flex flex-col gap-4">
-              {(reading || chips.length > 0) && !pickerOpen && <LinkedChips chips={chips} reading={reading && chips.length === 0} onRemove={removeChip} />}
+              {(reading || linked.length > 0) && !pickerOpen && <LinkedChips chips={chips} reading={reading && chips.length === 0} onRemove={removeChip} />}
               <div className="flex items-center justify-between gap-4">
                 <span className={cn('text-[12px] leading-4', text.trim() && !hasAudience ? 'text-amber-text' : 'text-grey-3')} data-testid="draft-hint">
                   {hint}

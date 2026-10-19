@@ -52,7 +52,7 @@ export function GiftyCursor({ label = 'Gifty', className, style }: { label?: Rea
   return (
     <div className={cn('pointer-events-none flex flex-col items-start', className)} style={style}>
       {G.cursor()}
-      <span className="inline-block rounded-[8px] rounded-tl-[4px] bg-violet px-2 py-1 text-[12px] font-medium leading-4 text-white">{label}</span>
+      <span className="inline-block whitespace-nowrap rounded-[8px] rounded-tl-[4px] bg-violet px-2 py-1 text-[12px] font-medium leading-4 text-white">{label}</span>
     </div>
   )
 }
