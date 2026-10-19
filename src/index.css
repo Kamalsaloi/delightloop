@@ -9,7 +9,9 @@
 @tailwind components;
 @tailwind utilities;
 
-html, body, #root { min-height: 100%; }
+html, body, #root { height: 100%; }
+/* The app is a fixed viewport shell: pages scroll their own containers, never the document. */
+html, body { overflow: hidden; overscroll-behavior: none; }
 body {
   margin: 0;
   background: #F6F6F4;
@@ -33,3 +35,30 @@ button { font: inherit; color: inherit; }
 
 @keyframes fade { from { opacity: 0 } to { opacity: 1 } }
 @keyframes slideIn { from { transform: translateX(16px); opacity: 0 } to { transform: none; opacity: 1 } }
+
+@keyframes menuIn { from { opacity: 0; transform: translateY(4px) scale(.98) } to { opacity: 1; transform: none } }
+@keyframes nodeIn { from { opacity: 0; transform: translateY(-6px) } to { opacity: 1; transform: none } }
+@keyframes toastIn { from { opacity: 0; transform: translateY(8px) } to { opacity: 1; transform: none } }
+@keyframes chipIn { from { opacity: 0; transform: translateY(3px) } to { opacity: 1; transform: none } }
+@keyframes shimmer { from { background-position: 100% 0 } to { background-position: -100% 0 } }
+
+/* Thin, quiet scrollbars for scroll containers. */
+.thin-scroll { scrollbar-width: thin; scrollbar-color: #DCDCD8 transparent; }
+.thin-scroll::-webkit-scrollbar { width: 8px; height: 8px; }
+.thin-scroll::-webkit-scrollbar-thumb { background: #DCDCD8; border-radius: 8px; border: 2px solid transparent; background-clip: content-box; }
+.thin-scroll::-webkit-scrollbar-track { background: transparent; }
+
+/* "Gifty is reading…" text shimmer and a soft working shimmer for surfaces. */
+.shimmer-text {
+  background: linear-gradient(90deg, #8B8D95 0%, #8B8D95 40%, #C9C4FC 50%, #8B8D95 60%, #8B8D95 100%);
+  background-size: 200% 100%;
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent !important;
+  animation: shimmer 1.4s linear infinite;
+}
+.shimmer-bg {
+  background-image: linear-gradient(90deg, #FBFBFA 0%, #F3F2FE 50%, #FBFBFA 100%);
+  background-size: 200% 100%;
+  animation: shimmer 1.4s linear infinite;
+}

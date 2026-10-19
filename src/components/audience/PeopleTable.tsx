@@ -31,10 +31,11 @@ type Props = {
   /** 03c layout: narrower Person/Address columns plus "What Gifty knows". */
   showKnows?: boolean
   pageSize?: number
+  onSeeAll?: () => void
 }
 
 /** Audience table: filter segmented, person rows with hover "Behavioural profile", footer. */
-export function PeopleTable({ people, counts, filter, onFilter, selected, onOpenProfile, onAddAddress, showKnows, pageSize = 5 }: Props) {
+export function PeopleTable({ people, counts, filter, onFilter, selected, onOpenProfile, onAddAddress, showKnows, pageSize = 5, onSeeAll }: Props) {
   const rows = people.filter((p) => matchesFilter(p, filter)).slice(0, pageSize)
 
   return (
@@ -68,7 +69,11 @@ export function PeopleTable({ people, counts, filter, onFilter, selected, onOpen
         <span className="text-grey-3">
           Showing {rows.length} of {counts[filter]}
         </span>
-        <button className="cursor-pointer font-medium text-violet-link hover:underline">See everyone</button>
+        {onSeeAll && (
+          <button onClick={onSeeAll} data-testid="see-everyone" className="cursor-pointer font-medium text-violet-link hover:underline">
+            {rows.length < counts[filter] ? 'See everyone' : 'Show fewer'}
+          </button>
+        )}
       </div>
     </div>
   )

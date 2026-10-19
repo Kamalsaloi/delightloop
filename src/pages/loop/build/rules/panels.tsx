@@ -207,7 +207,7 @@ export function ReviewPanel({
         <span className="text-[12px] font-medium leading-4 text-grey-3">In plain words</span>
         <p className="text-[13px] leading-5 text-[#33353C]">{sentence}</p>
       </div>
-      <div className="flex shrink-0 items-center gap-2 border-t border-line-soft pt-4">
+      <div className="sticky -bottom-6 -mx-6 -mb-6 mt-auto flex shrink-0 items-center gap-2 border-t border-line-soft bg-white px-6 pb-6 pt-4">
         <span className="grow basis-0 text-[12px] leading-4 text-grey-3">Applies to everyone still in the loop</span>
         <GhostButton onClick={onCancel} leading={RG.close(12, '#111216', 1.7)} className="h-10 px-[14px]">
           Cancel
@@ -290,7 +290,7 @@ export function ReplyPanel({ onBack, onSave }: { onBack: () => void; onSave: () 
 
   return (
     <PanelShell flush>
-      <div className="flex shrink-0 items-center gap-3 px-6 py-5">
+      <div className="sticky top-0 z-10 flex shrink-0 items-center gap-3 bg-white px-6 py-5">
         <button
           type="button"
           aria-label="Back"
@@ -392,7 +392,7 @@ export function ReplyPanel({ onBack, onSave }: { onBack: () => void; onSave: () 
         </p>
       </div>
 
-      <div className="flex shrink-0 justify-end gap-2 rounded-b-[20px] border-t border-line-soft bg-[#FBFBFA] px-6 py-4">
+      <div className="sticky bottom-0 mt-auto flex shrink-0 justify-end gap-2 border-t border-line-soft bg-[#FBFBFA] px-6 py-4">
         <GhostButton onClick={onBack} className="h-9 px-[14px]">
           Cancel
         </GhostButton>

@@ -1,195 +1,168 @@
-import { useEffect, useState, type ReactNode } from 'react'
+import { useState, type ReactNode } from 'react'
 import { cn } from '@/lib/cn'
-import { personBySlug, subtitle, type Person } from '@/data/people'
+import { subtitle, type Person } from '@/data/people'
+import { PanelFrame } from '@/components/panels/FloatingPanel'
 import { OutlineAction, PersonAvatar } from './marks'
 
 type Props = {
-  open: boolean
+  missing: Person[]
   onClose: () => void
-  /** Called with how many addresses were saved, before closing. */
-  onSave?: (count: number) => void
+  /** slug → address line. */
+  onSave: (lines: Record<string, string>) => void
+  onAsk: (person: Person) => void
 }
 
-const MEERA_OPTIONS = [
-  { id: 'indiranagar', title: 'Indiranagar office, Bengaluru', sub: 'Where the sales team sits, from 4 team posts' },
-  { id: 'bkc', title: 'BKC head office, Mumbai', sub: 'Registered address' },
-]
+const SHOWN = 3
 
-// The "4 more, all fully remote" behind Show.
-const MORE: Pick<Person, 'name' | 'role' | 'company' | 'initials'>[] = [
-  { name: 'Nina Alvarez', role: 'VP Sales', company: 'Corvid', initials: 'NA' },
-  { name: 'Raj Patel', role: 'Head of Sales', company: 'Sundial', initials: 'RP' },
-  { name: 'Hana Kim', role: 'CRO', company: 'Pebble', initials: 'HK' },
-  { name: 'Marco Rossi', role: 'VP Sales', company: 'Tidewater', initials: 'MR' },
-]
-
-/** 03e: right sheet to resolve the 7 missing addresses. Reused by 03, B0a and 07. */
-export function AddAddressesSheet({ open, onClose, onSave }: Props) {
-  const [meeraChoice, setMeeraChoice] = useState<string | null>('indiranagar')
-  const [tomTyping, setTomTyping] = useState(false)
-  const [tomAddress, setTomAddress] = useState('')
-  const [askedOwner, setAskedOwner] = useState(false)
+/** 03e: resolve the addresses Gifty couldn't find. Choose an office, type one, or send something digital. */
+export function AddAddressesSheet({ missing, onClose, onSave, onAsk }: Props) {
+  const [lines, setLines] = useState<Record<string, string>>({})
+  const [typing, setTyping] = useState<Record<string, boolean>>({})
+  const [asked, setAsked] = useState<Record<string, boolean>>({})
   const [showMore, setShowMore] = useState(false)
   const [dontHold, setDontHold] = useState(true)
+  const resolved = Object.entries(lines).filter(([, v]) => v.trim())
+  const count = resolved.length
+  const shown = showMore ? missing : missing.slice(0, SHOWN)
+  const rest = missing.length - SHOWN
 
-  useEffect(() => {
-    if (!open) return
-    const onKey = (e: KeyboardEvent) => e.key === 'Escape' && onClose()
-    window.addEventListener('keydown', onKey)
-    return () => window.removeEventListener('keydown', onKey)
-  }, [open, onClose])
+  function set(slug: string, v: string) {
+    setLines((l) => ({ ...l, [slug]: v }))
+  }
 
-  if (!open) return null
-
-  const meera = personBySlug('meera')!
-  const ethan = personBySlug('ethan')!
-  const tom = personBySlug('tom')!
-  const saveCount = (meeraChoice ? 1 : 0) + (tomAddress.trim() ? 1 : 0)
-
-  function save() {
-    onSave?.(saveCount)
-    onClose()
+  function block(p: Person) {
+    const hint = p.addressHint
+    const value = lines[p.slug] ?? ''
+    return (
+      <Block key={p.slug} className={cn('gap-3', hint?.options && 'bg-[#FCFCFB]')}>
+        <PersonLine person={p} status={asked[p.slug] ? 'Asked the account owner' : hint?.waitingOn ? `Waiting on ${hint.waitingOn}` : value && !typing[p.slug] ? 'Ready to save' : undefined} />
+        <Note>{hint?.note ?? 'No home or office address anywhere public.'}</Note>
+        {hint?.options ? (
+          <div className="flex flex-col gap-1.5">
+            {hint.options.map((o) => (
+              <RadioOption key={o.id} title={o.title} sub={o.sub} selected={value === o.title} onSelect={() => set(p.slug, value === o.title ? '' : o.title)} />
+            ))}
+          </div>
+        ) : typing[p.slug] ? (
+          <input
+            autoFocus
+            data-testid={`address-input-${p.slug}`}
+            value={value}
+            onChange={(e) => set(p.slug, e.target.value)}
+            placeholder="Street, city, postcode"
+            className="h-[34px] rounded-[8px] px-3 text-[13px] leading-4 text-ink shadow-[inset_0_0_0_1px_#E4E4E1] outline-none placeholder:text-grey-3 focus:shadow-[inset_0_0_0_1.5px_#6559F7]"
+          />
+        ) : value ? (
+          <div className="flex items-center justify-between rounded-[8px] bg-page px-3 py-2">
+            <span className="text-[13px] leading-4 text-ink">{value}</span>
+            <button onClick={() => set(p.slug, '')} className="cursor-pointer text-[12.5px] font-medium leading-4 text-grey-2 hover:text-ink">
+              Undo
+            </button>
+          </div>
+        ) : (
+          <div className="flex flex-wrap gap-2">
+            <OutlineAction raised={false} onClick={() => setTyping((t) => ({ ...t, [p.slug]: true }))}>
+              Type it in
+            </OutlineAction>
+            {!hint?.waitingOn && (
+              <OutlineAction
+                raised={false}
+                onClick={() => {
+                  setAsked((a) => ({ ...a, [p.slug]: true }))
+                  onAsk(p)
+                }}
+              >
+                {asked[p.slug] ? 'Asked' : 'Ask the account owner'}
+              </OutlineAction>
+            )}
+            <button onClick={() => set(p.slug, 'Digital gift, no address needed')} className="flex h-[30px] cursor-pointer items-center px-3 text-[12.5px] font-medium leading-4 text-grey-2 hover:text-ink">
+              Send a digital gift
+            </button>
+          </div>
+        )}
+      </Block>
+    )
   }
 
   return (
-    // Floating card, no scrim: the page stays usable, so only ×, Later or Esc close it.
-    <div
-      role="dialog"
-      aria-label="Addresses to add"
-      className="fixed right-12 top-[88px] z-50 flex max-h-[calc(100vh-112px)] w-[384px] flex-col overflow-clip rounded-card bg-white shadow-[0_0_0_1px_#EBEBE8,0_1px_2px_#1112160A,0_20px_48px_-24px_#1112162E] animate-[slideIn_.2s_ease-out]"
-    >
+    <PanelFrame
+      header={
         <div className="flex flex-col gap-1.5 border-b border-line-soft px-6 pb-5 pt-7">
           <div className="flex items-center justify-between">
-            <h2 className="text-[20px] font-semibold leading-[26px] tracking-[-0.015em] text-ink">7 addresses to add</h2>
-            <button onClick={onClose} aria-label="Close" className="-m-0.5 cursor-pointer rounded-[6px] p-0.5 hover:bg-fill">
+            <h2 className="text-[20px] font-semibold leading-[26px] tracking-[-0.015em] text-ink">
+              {missing.length ? `${missing.length} ${missing.length === 1 ? 'address' : 'addresses'} to add` : 'Every address found'}
+            </h2>
+            <button onClick={onClose} aria-label="Close" data-testid="panel-close" className="-m-0.5 cursor-pointer rounded-[6px] p-0.5 hover:bg-fill">
               <svg width="16" height="16" viewBox="0 0 16 16">
                 <path d="M4 4l8 8M12 4l-8 8" fill="none" stroke="#6E6F7C" strokeWidth="1.6" strokeLinecap="round" />
               </svg>
             </button>
           </div>
-          <p className="text-[13.5px] leading-5 text-grey-2">
-            Gifty checked LinkedIn, past deliveries and company offices. These are the ones it couldn’t pin down. Only the letter and gift need one.
-          </p>
+          <p className="text-[13.5px] leading-5 text-grey-2">Gifty checked LinkedIn, past deliveries and company offices. These are the ones it couldn’t pin down. Only the letter and gift need one.</p>
         </div>
-
-        <div className="flex min-h-0 flex-1 flex-col overflow-auto">
-          <Block className="gap-[14px] bg-[#FCFCFB]">
-            <PersonLine person={meera} />
-            <Note>Orbital has two offices and her profile doesn’t say which. Pick one.</Note>
-            <div className="flex flex-col gap-1.5">
-              {MEERA_OPTIONS.map((o) => (
-                <RadioOption key={o.id} title={o.title} sub={o.sub} selected={meeraChoice === o.id} onSelect={() => setMeeraChoice(o.id)} />
-              ))}
-            </div>
-          </Block>
-
-          <Block className="gap-3">
-            <PersonLine person={ethan} sub={`${subtitle(ethan)} · joined last week`} status="Waiting on Rahul" />
-            <Note>Too new for Gifty to find. You asked Rahul, his account owner, on Slack an hour ago.</Note>
-          </Block>
-
-          <Block className="gap-3">
-            <PersonLine person={tom} status={askedOwner ? 'Asked his account owner' : undefined} />
-            <Note>Fully remote, and no home address anywhere public.</Note>
-            {tomTyping ? (
-              <input
-                autoFocus
-                value={tomAddress}
-                onChange={(e) => setTomAddress(e.target.value)}
-                placeholder="Street, city, postcode"
-                className="h-[34px] rounded-[8px] px-3 text-[13px] leading-4 text-ink shadow-[inset_0_0_0_1px_#E4E4E1] outline-none placeholder:text-grey-3 focus:shadow-[inset_0_0_0_1.5px_#6559F7]"
-              />
-            ) : (
-              <div className="flex flex-wrap gap-2">
-                <OutlineAction raised={false} onClick={() => setTomTyping(true)}>
-                  Type it in
-                </OutlineAction>
-                <OutlineAction raised={false} onClick={() => setAskedOwner(true)}>
-                  Ask his account owner
-                </OutlineAction>
-                <button className="flex h-[30px] cursor-pointer items-center px-3 text-[12.5px] font-medium leading-4 text-grey-2 hover:text-ink">
-                  Send a digital gift
-                </button>
-              </div>
-            )}
-          </Block>
-
-          {showMore &&
-            MORE.map((p) => (
-              <Block key={p.name} compact className="gap-3">
-                <div className="flex items-center gap-3">
-                  <PersonAvatar person={p} size={36} />
-                  <div className="flex flex-1 flex-col gap-0.5">
-                    <span className="text-[14px] font-semibold leading-[18px] text-ink">{p.name}</span>
-                    <span className="text-[12.5px] leading-4 text-grey-3">
-                      {p.role}, {p.company} · fully remote
-                    </span>
-                  </div>
-                  <OutlineAction raised={false}>Type it in</OutlineAction>
-                </div>
-              </Block>
-            ))}
-
-          <div className="flex items-center justify-between px-6 py-4">
-            <span className="text-[13px] leading-[18px] text-grey-2">4 more, all fully remote</span>
-            <button onClick={() => setShowMore((v) => !v)} className="cursor-pointer text-[13px] font-medium leading-4 text-violet-link hover:underline">
-              {showMore ? 'Hide' : 'Show'}
-            </button>
-          </div>
-        </div>
-
+      }
+      footer={
         <div className="flex flex-col gap-4 border-t border-line px-6 pb-7 pt-5">
           <button onClick={() => setDontHold((v) => !v)} className="flex cursor-pointer items-start gap-2.5 text-left">
-            <span
-              className={cn(
-                'flex h-4 w-4 shrink-0 items-center justify-center rounded-[4px]',
-                dontHold ? 'bg-violet' : 'bg-white shadow-[inset_0_0_0_1.5px_#D4D4D0]',
-              )}
-            >
+            <span className={cn('flex h-4 w-4 shrink-0 items-center justify-center rounded-[4px]', dontHold ? 'bg-violet' : 'bg-white shadow-[inset_0_0_0_1.5px_#D4D4D0]')}>
               {dontHold && (
                 <svg width="10" height="10" viewBox="0 0 16 16">
                   <path d="M3.5 8.5 6.5 11.5 12.5 4.5" fill="none" stroke="#fff" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round" />
                 </svg>
               )}
             </span>
-            <span className="text-[13px] leading-[18px] text-[#33353C]">
-              Don’t hold the loop for these. They get the email and LinkedIn steps now, and the gift steps once an address comes in.
-            </span>
+            <span className="text-[13px] leading-[18px] text-[#33353C]">Don’t hold the loop for these. They get the email and LinkedIn steps now, and the gift steps once an address comes in.</span>
           </button>
           <div className="flex items-center justify-end gap-2">
             <button onClick={onClose} className="flex h-[38px] cursor-pointer items-center rounded-[10px] px-[14px] text-[13.5px] font-medium leading-4 text-grey-1 hover:bg-fill">
               Later
             </button>
             <button
-              onClick={save}
-              disabled={saveCount === 0}
-              className="flex h-[38px] cursor-pointer items-center rounded-[10px] bg-violet px-4 text-[13.5px] font-semibold leading-4 text-white shadow-primary hover:bg-[#5A4EF0] disabled:cursor-default disabled:opacity-50"
+              data-testid="save-addresses"
+              onClick={() => onSave(Object.fromEntries(resolved))}
+              disabled={count === 0}
+              className="flex h-[38px] cursor-pointer items-center gap-2 rounded-[10px] bg-violet px-4 text-[13.5px] font-semibold leading-4 text-white shadow-primary hover:bg-[#5A4EF0] disabled:cursor-not-allowed disabled:opacity-50"
             >
-              Save {saveCount} address{saveCount === 1 ? '' : 'es'}
+              <svg width="14" height="14" viewBox="0 0 16 16" fill="none" aria-hidden>
+                <path d="M3.5 8.5 6.5 11.5 12.5 4.5" stroke="#FFFFFF" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" />
+              </svg>
+              Save {count} address{count === 1 ? '' : 'es'}
             </button>
           </div>
         </div>
-    </div>
+      }
+    >
+      {shown.map(block)}
+      {rest > 0 && (
+        <div className="flex items-center justify-between px-6 py-4">
+          <span className="text-[13px] leading-[18px] text-grey-2">{showMore ? `All ${missing.length} shown` : `${rest} more, all fully remote`}</span>
+          <button onClick={() => setShowMore((v) => !v)} className="cursor-pointer text-[13px] font-medium leading-4 text-violet-link hover:underline">
+            {showMore ? 'Hide' : 'Show'}
+          </button>
+        </div>
+      )}
+      {missing.length === 0 && <p className="px-6 py-6 text-[13.5px] leading-5 text-grey-2">Nothing to add. Every letter and gift has somewhere to go.</p>}
+    </PanelFrame>
   )
 }
 
-function Block({ className, compact, children }: { className?: string; compact?: boolean; children: ReactNode }) {
-  return <div className={cn('flex flex-col border-b border-line-soft px-6', compact ? 'py-4' : 'py-5', className)}>{children}</div>
+function Block({ className, children }: { className?: string; children: ReactNode }) {
+  return <div className={cn('flex flex-col border-b border-line-soft px-6 py-5', className)}>{children}</div>
 }
 
 function Note({ children }: { children: ReactNode }) {
   return <p className="text-[13px] leading-[18px] text-[#33353C]">{children}</p>
 }
 
-function PersonLine({ person, sub, status }: { person: Person; sub?: string; status?: string }) {
+function PersonLine({ person, status }: { person: Person; status?: string }) {
   return (
     <div className="flex items-center gap-3">
       <PersonAvatar person={person} size={36} />
       <div className="flex flex-1 flex-col gap-0.5">
         <span className="text-[14px] font-semibold leading-[18px] text-ink">{person.name}</span>
-        <span className="text-[12.5px] leading-4 text-grey-3">{sub ?? subtitle(person)}</span>
+        <span className="text-[12.5px] leading-4 text-grey-3">{subtitle(person)}</span>
       </div>
-      {status && <span className="text-[12.5px] font-medium leading-4 text-amber-text">{status}</span>}
+      {status && <span className={cn('text-[12.5px] font-medium leading-4', status === 'Ready to save' ? 'text-green-text' : 'text-amber-text')}>{status}</span>}
     </div>
   )
 }
@@ -198,14 +171,9 @@ function RadioOption({ title, sub, selected, onSelect }: { title: string; sub: s
   return (
     <button
       onClick={onSelect}
-      className={cn(
-        'flex cursor-pointer items-center gap-3 rounded-[10px] bg-white px-[14px] py-3 text-left transition-shadow',
-        selected ? 'shadow-[inset_0_0_0_1.5px_#6559F7]' : 'shadow-[inset_0_0_0_1px_#E4E4E1] hover:bg-fill-hover',
-      )}
+      className={cn('flex cursor-pointer items-center gap-3 rounded-[10px] bg-white px-[14px] py-3 text-left transition-shadow', selected ? 'shadow-[inset_0_0_0_1.5px_#6559F7]' : 'shadow-[inset_0_0_0_1px_#E4E4E1] hover:bg-fill-hover')}
     >
-      <span
-        className={cn('h-4 w-4 shrink-0 rounded-full', selected ? 'shadow-[inset_0_0_0_4.5px_#6559F7]' : 'shadow-[inset_0_0_0_1.5px_#D4D4D0]')}
-      />
+      <span className={cn('h-4 w-4 shrink-0 rounded-full', selected ? 'shadow-[inset_0_0_0_4.5px_#6559F7]' : 'shadow-[inset_0_0_0_1.5px_#D4D4D0]')} />
       <span className="flex flex-1 flex-col gap-0.5">
         <span className="text-[13px] font-medium leading-4 text-ink">{title}</span>
         <span className="text-[12px] leading-4 text-grey-3">{sub}</span>

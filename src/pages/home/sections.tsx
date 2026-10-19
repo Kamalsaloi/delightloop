@@ -8,7 +8,6 @@ import { DAY, fmtAgo, fmtDay, money, nextMonday } from '@/lib/time'
 import { flatten, nodeDays } from '@/store/graph'
 import { SUGGESTION_LIST } from '@/store/seed'
 import { audienceCounts, giftTotal, needsBudgetApproval, openReplies } from '@/store/selectors'
-import { activePeople } from '@/store/sim'
 import { useStore } from '@/store/store'
 import type { FlowNode, Loop, Suggestion } from '@/store/types'
 import { ArrowIcon, CalendarIcon, FaceStack, HubDot, Photo, PlusIcon, Stat, StatRow, WHITE_BTN } from './parts'
@@ -121,7 +120,7 @@ function SuggestionCard({ s, top }: { s: Suggestion; top: boolean }) {
         data-testid={`suggestion-${s.id}`}
         onClick={open}
         onKeyDown={(e) => e.key === 'Enter' && open()}
-        className="flex min-w-0 flex-1 basis-0 cursor-pointer flex-col rounded-[20px] bg-violet shadow-[inset_0_0_0_1px_#5547E6,inset_0_1px_0_rgba(255,255,255,.18),0_16px_36px_-16px_rgba(101,89,247,.55)] transition-transform duration-150 hover:-translate-y-px"
+        className="group/top flex min-w-0 flex-1 basis-0 cursor-pointer flex-col rounded-[20px] bg-violet shadow-[inset_0_0_0_1px_#5547E6,inset_0_1px_0_rgba(255,255,255,.18),0_16px_36px_-16px_rgba(101,89,247,.55)] transition-[transform,background-color,box-shadow] duration-200 ease-out hover:-translate-y-1 hover:bg-[#6B60F8] hover:shadow-[inset_0_0_0_1px_#5547E6,inset_0_1px_0_rgba(255,255,255,.24),0_24px_48px_-18px_rgba(101,89,247,.7)]"
       >
         <div className="flex flex-col gap-3.5 px-5 pb-4 pt-5">
           <div className="flex items-center justify-between">
@@ -148,7 +147,9 @@ function SuggestionCard({ s, top }: { s: Suggestion; top: boolean }) {
           <span className="flex-1 basis-0 text-[12px] leading-4 text-white/70">{s.steps}</span>
           <span className="flex h-8 items-center gap-1.5 rounded-[9px] bg-white px-3 text-[12.5px] font-semibold leading-4 text-[#4B3FD9] shadow-[0_1px_2px_#11121626]">
             View the loop
-            <ArrowIcon size={12} color="#4B3FD9" />
+            <span className="transition-transform duration-200 ease-out group-hover/top:translate-x-0.5">
+              <ArrowIcon size={12} color="#4B3FD9" />
+            </span>
           </span>
         </div>
       </div>
@@ -563,4 +564,3 @@ export function QuarterAndDone({ loops, finished }: { loops: Loop[]; finished: L
   )
 }
 
-export { activePeople }

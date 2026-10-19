@@ -10,15 +10,20 @@ type Props = {
   onClose: () => void
   onAddAddress?: () => void
   onRemove?: () => void
+  onPrev?: () => void
+  onNext?: () => void
 }
 
 /** Right-hand behavioural profile for one person (03d / B0b, Paper DAL-0). Works for any slug. */
-export function ProfilePanel({ person, backLabel = 'Everyone', position, onClose, onAddAddress, onRemove }: Props) {
+export function ProfilePanel({ person, backLabel = 'Everyone', position, onClose, onAddAddress, onRemove, onPrev, onNext }: Props) {
   const profile = getProfile(person)
 
   return (
-    <aside className="flex flex-col overflow-clip rounded-card bg-white shadow-[0_0_0_1px_#EBEBE8,0_1px_2px_#1112160A,0_20px_48px_-24px_#1112162E] animate-[slideIn_.2s_ease-out]">
-      <Header person={person} profile={profile} backLabel={backLabel} position={position} onClose={onClose} />
+    <div className="flex min-h-0 flex-1 flex-col" data-testid="profile-panel">
+      <div className="shrink-0">
+        <Header person={person} profile={profile} backLabel={backLabel} position={position} onClose={onClose} onPrev={onPrev} onNext={onNext} />
+      </div>
+      <div data-panel-body className="thin-scroll min-h-0 flex-1 overflow-y-auto overscroll-contain">
 
       {(profile.post || profile.timeline.length > 0) && (
         <Section title="On their mind" gap={12}>
@@ -64,28 +69,26 @@ export function ProfilePanel({ person, backLabel = 'Everyone', position, onClose
             <span className="text-[13px] leading-[18px] text-amber-text">Gifty couldn’t find an address</span>
           )}
         </div>
-        <button
-          onClick={profile.shipsTo ? undefined : onAddAddress}
-          className="shrink-0 cursor-pointer text-[12.5px] font-medium leading-4 text-violet-link hover:underline"
-        >
+        <button onClick={onAddAddress} className="shrink-0 cursor-pointer text-[12.5px] font-medium leading-4 text-violet-link hover:underline">
           {profile.shipsTo ? 'Edit' : 'Add'}
         </button>
       </div>
+      </div>
 
-      <div className="flex items-center justify-between px-5 pb-4 pt-[14px] text-[12.5px] font-medium leading-4">
+      <div className="flex shrink-0 items-center justify-between border-t border-line-soft px-5 pb-4 pt-[14px] text-[12.5px] font-medium leading-4">
         <button className="flex cursor-pointer items-center gap-1.5 text-grey-1 hover:text-ink">
           <HubSpotDot size={14} />
           Open in HubSpot
         </button>
-        <button onClick={onRemove ?? onClose} className="cursor-pointer text-[#C2410C] hover:underline">
+        <button onClick={onRemove ?? onClose} data-testid="remove-person" className="cursor-pointer text-[#C2410C] hover:underline">
           Remove from loop
         </button>
       </div>
-    </aside>
+    </div>
   )
 }
 
-function Header({ person, profile, backLabel, position, onClose }: { person: Person; profile: Profile; backLabel: string; position?: string; onClose: () => void }) {
+function Header({ person, profile, backLabel, position, onClose, onPrev, onNext }: { person: Person; profile: Profile; backLabel: string; position?: string; onClose: () => void; onPrev?: () => void; onNext?: () => void }) {
   return (
     <div className="flex flex-col gap-[18px] border-b border-[#EFEFEC] bg-[#F7F7F5] px-5 pb-5 pt-4">
       <div className="flex items-center justify-between">
@@ -98,8 +101,18 @@ function Header({ person, profile, backLabel, position, onClose }: { person: Per
           </svg>
           {backLabel}
         </button>
-        <div className="flex items-center gap-3">
-          {position && <span className="text-[12.5px] leading-4 text-grey-3">{position}</span>}
+        <div className="flex items-center gap-2">
+          {position && <span className="text-[12.5px] tabular-nums leading-4 text-grey-3" data-testid="profile-position">{position}</span>}
+          {onPrev && (
+            <button onClick={onPrev} aria-label="Previous person" data-testid="profile-prev" className="flex h-[26px] w-[26px] cursor-pointer items-center justify-center rounded-[7px] hover:bg-[#EEEEEB]">
+              <svg width="12" height="12" viewBox="0 0 16 16"><path d="M10 3.5 5.5 8l4.5 4.5" fill="none" stroke="#55575F" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round" /></svg>
+            </button>
+          )}
+          {onNext && (
+            <button onClick={onNext} aria-label="Next person" data-testid="profile-next" className="flex h-[26px] w-[26px] cursor-pointer items-center justify-center rounded-[7px] hover:bg-[#EEEEEB]">
+              <svg width="12" height="12" viewBox="0 0 16 16"><path d="M6 3.5 10.5 8 6 12.5" fill="none" stroke="#55575F" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round" /></svg>
+            </button>
+          )}
           <button onClick={onClose} aria-label="Close" className="-m-0.5 cursor-pointer rounded-[6px] p-0.5 hover:bg-[#EEEEEB]">
             <svg width="14" height="14" viewBox="0 0 16 16">
               <path d="M4 4l8 8M12 4l-8 8" fill="none" stroke="#8B8D95" strokeWidth="1.6" strokeLinecap="round" />

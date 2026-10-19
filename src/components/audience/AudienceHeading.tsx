@@ -1,4 +1,3 @@
-import { Link } from 'react-router-dom'
 import { cn } from '@/lib/cn'
 import { HubSpotDot } from './marks'
 
@@ -42,38 +41,27 @@ export function AudienceHeading({ title, source, linkLabel, linkOpen, onLink, on
   )
 }
 
-/** Top-bar right slot: "Saved just now" + the screen's primary (or a disabled stand-in). */
-/** `secondary` drops it to the white style while a sheet owns the screen's primary. */
-export function HeaderPrimary({ to, label, disabled, secondary }: { to?: string; label: string; disabled?: boolean; secondary?: boolean }) {
-  const arrow = (
-    <svg width="13" height="13" viewBox="0 0 16 16" className="shrink-0">
-      <path d="M3.5 8h9M9 4.5 12.5 8 9 11.5" fill="none" stroke={secondary ? '#111216' : '#fff'} strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round" />
-    </svg>
-  )
-  const base = 'flex items-center gap-2 rounded-[10px] px-4 py-3 text-[13px] font-semibold leading-4'
+/** Top-bar primary for audience pages. `secondary` drops it to white while a panel owns the primary. */
+export function HeaderPrimary({ onClick, label, disabled, secondary, hint }: { onClick?: () => void; label: string; disabled?: boolean; secondary?: boolean; hint?: string }) {
+  const white = secondary || disabled
   return (
-    <div className="flex items-center gap-4">
-      <span className="text-[12.5px] leading-4 text-grey-3">Saved just now</span>
-      {disabled || !to ? (
-        <span aria-disabled className={cn(base, 'cursor-default bg-[#EDEDEA] text-[#9C9DA5]')}>
-          {label}
-          {arrow}
-        </span>
-      ) : (
-        <Link
-          to={to}
-          className={cn(
-            base,
-            'transition-colors',
-            secondary
-              ? 'bg-white text-ink shadow-[inset_0_0_0_1px_#E4E4E1,0_1px_2px_#1112160D] hover:bg-fill-hover'
-              : 'bg-violet text-white shadow-primary hover:bg-[#5A4EF0]',
-          )}
-        >
-          {label}
-          {arrow}
-        </Link>
+    <button
+      type="button"
+      data-testid="audience-primary"
+      title={disabled ? hint : undefined}
+      disabled={disabled}
+      onClick={onClick}
+      className={cn(
+        'flex h-10 items-center gap-2 rounded-[10px] px-4 text-[13px] font-semibold leading-4 transition-colors',
+        disabled && 'cursor-not-allowed bg-[#EDEDEA] text-[#9C9DA5]',
+        !disabled && secondary && 'cursor-pointer bg-white text-ink shadow-[inset_0_0_0_1px_#E4E4E1,0_1px_2px_#1112160D] hover:bg-fill-hover',
+        !disabled && !secondary && 'cursor-pointer bg-violet text-white shadow-primary hover:bg-[#5A4EF0]',
       )}
-    </div>
+    >
+      {label}
+      <svg width="13" height="13" viewBox="0 0 16 16" className="shrink-0">
+        <path d="M3.5 8h9M9 4.5 12.5 8 9 11.5" fill="none" stroke={white ? (disabled ? '#9C9DA5' : '#111216') : '#fff'} strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round" />
+      </svg>
+    </button>
   )
 }

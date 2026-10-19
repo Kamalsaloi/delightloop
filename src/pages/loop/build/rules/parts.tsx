@@ -9,14 +9,15 @@ import { RG } from './glyphs'
 /** 384 rules panel (radius 20, panel shadow). Scrolls inside the rail when taller than the canvas. */
 export function PanelShell({ children, flush }: { children: ReactNode; flush?: boolean }) {
   return (
-    <aside
+    <div
+      data-panel-body
       className={cn(
-        'flex min-h-0 w-[384px] flex-col overflow-y-auto rounded-card bg-white shadow-panel [scrollbar-width:none] animate-[fade_.15s_ease-out]',
+        'thin-scroll flex min-h-0 w-full flex-1 flex-col overflow-y-auto overscroll-contain bg-white',
         !flush && 'gap-4 p-6',
       )}
     >
       {children}
-    </aside>
+    </div>
   )
 }
 
@@ -36,7 +37,7 @@ function SquareButton({ label, onClick, children }: { label: string; onClick?: (
 /** Title + subtitle; close (×) or back (‹) on the right. */
 export function PanelHeader({ title, subtitle, onClose, onBack }: { title: string; subtitle: string; onClose?: () => void; onBack?: () => void }) {
   return (
-    <div className="flex shrink-0 items-start justify-between">
+    <div className="sticky top-0 z-10 -mx-6 -mb-2 -mt-6 flex shrink-0 items-start justify-between bg-white px-6 pb-2 pt-6">
       <div className="flex flex-col gap-0.5">
         <span className="text-[16px] font-semibold leading-5 tracking-[-0.01em] text-ink">{title}</span>
         <span className="text-[12.5px] leading-4 text-grey-3">{subtitle}</span>
