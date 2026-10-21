@@ -15,6 +15,7 @@ Short product truths. One line each.
 - 3 templates: Brand envelope, Postcard, Signed postcard. No "V2" in names.
 - Signer only for Signed postcard: a workspace member (with photo) or someone else (name + title).
 - Titles: preset list plus "Other" to type one.
+- No workspace members → "Add member" takes them to the members page.
 - Sticker is optional: a checkbox reveals the stickers. No "No sticker" tile.
 - No return address in the letter preset.
 
