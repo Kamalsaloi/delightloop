@@ -22,6 +22,7 @@ The judgement behind the DelightLoop redesigns: the outreach-loop builder (the a
 ## Design for real use
 
 - **Every state.** Empty, hover, expanded, open dropdown, connected / not connected, errors, and "fix" cards with a proper CTA (e.g. email has no sender → add sender).
+- **Interaction states, always, unasked.** Every clickable thing (cards, buttons, tiles, inputs, selects) gets rest, hover, pressed and disabled, plus selected / focus / open where they apply, on a "States" frame beside the screen. Hover lifts, pressed sinks, disabled fades with no shadow.
 - **Scale.** Ask "what if there are 50?": 50 presets per channel, 50 people who know someone. Show 2–3, then "View all", search or a collapse.
 - **Hover actions** carry secondary actions (edit, delete, favourite, behavioural profile) instead of permanent button rows.
 - **Remove what confuses.** If a state can mislead someone, cut it.
