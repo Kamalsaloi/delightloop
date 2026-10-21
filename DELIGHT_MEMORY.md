@@ -7,6 +7,8 @@ Short product truths. One line each.
 - On demand: not in stock; we buy it after it's sent. Label it "On demand".
 - Don't hide on-demand gifts by default ("In stock only" starts off).
 - Preset = One gift, or Delight choice (recipient picks 1 of up to 3, min 2).
+- Everything comes from a preset. A step only picks among its preset's gifts; no "All gifts".
+- Need another gift? Edit the preset or switch presets.
 - Gifty finds addresses. Never ask the recipient; the creator fills gaps.
 
 ## Money
