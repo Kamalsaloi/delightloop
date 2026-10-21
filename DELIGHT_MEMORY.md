@@ -7,14 +7,14 @@ Short product truths. One line each.
 - On demand: not in stock; we buy it after it's sent. Label it "On demand".
 - Don't hide on-demand gifts by default ("In stock only" starts off).
 - Preset = One gift, or Delight choice (recipient picks 1 of up to 3, min 2).
-- Everything comes from a preset. A step only picks among its preset's gifts; no "All gifts".
+- Everything comes from a preset: gift, gift type, postcard, sticker. A step can't change them.
 - Need another gift? Edit the preset or switch presets.
-- Sticker comes from the preset only; a step can't change it.
 - Gifty finds addresses. Never ask the recipient; the creator fills gaps.
 
 ## Letters
 - 3 templates: Brand envelope, Postcard, Signed postcard. No "V2" in names.
 - Signer only for Signed postcard: a workspace member (with photo) or someone else (name + title).
+- Postcard has no signer: never show "Signed by" on it.
 - Titles: preset list plus "Other" to type one.
 - No workspace members → "Add member" takes them to the members page.
 - Sticker is optional: a checkbox reveals the stickers. No "No sticker" tile.

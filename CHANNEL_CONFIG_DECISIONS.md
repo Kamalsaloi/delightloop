@@ -21,7 +21,7 @@ Paper: page "Channel config redesign". Each row is one channel, prod on the left
 - Order: Name, Gift type, Gifts, Sent by, Sticker.
 - Gift type is a dropdown with icons: One gift, or Delight choice (they pick 1 of up to 3).
 - Gifts are cards, three across. View all opens a modal with search and sort by price.
-- Everything comes from the preset. A step only picks among the preset's gifts.
+- Everything comes from the preset. The step shows gift, postcard and sticker read-only, marked "From preset".
 - On-demand gifts are labelled and charged at launch.
 - No gift descriptions; the photo says enough.
 
