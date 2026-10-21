@@ -19,6 +19,12 @@ Short product truths. One line each.
 - Sticker is optional: a checkbox reveals the stickers. No "No sticker" tile.
 - No return address in the letter preset.
 
+## Email
+- Picking a person uses all their mailboxes.
+- Inactive people can't send; show "Inactive", can't be picked.
+- Senders can be zero: export the emails + details after the play runs, send manually.
+- Sending window: workspace window by default; Modify sets one per config.
+
 ## Money
 - Everything is paid from the wallet.
 - On-demand gifts are charged at launch, before we buy them.
