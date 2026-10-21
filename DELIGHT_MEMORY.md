@@ -31,6 +31,7 @@ Short product truths. One line each.
 
 ## LinkedIn
 - Same senders rules as email (inactive pickable, zero allowed, manual export).
+- Email and LinkedIn steps pick a preset first; senders come from it.
 - Actions: Invite, Message, InMail, React, Comment. Follow and Visit not available yet.
 - React and Comment wait for a person's approval and need Engagement on in Settings.
 - Daily caps live in Settings, Budget: 6 invites, 30 messages, 10 reactions, 3 comments.
