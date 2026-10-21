@@ -8,6 +8,7 @@ Short product truths. One line each.
 - Don't hide on-demand gifts by default ("In stock only" starts off).
 - Preset = One gift, or Delight choice (recipient picks 1 of up to 3, min 2).
 - Everything comes from a preset: gift, gift type, postcard, sticker. A step can't change them.
+- Step "How they get it": Preset, or Personal choice (Soon). One gift / Delight choice is set in the preset.
 - Need another gift? Edit the preset or switch presets.
 - Gifty finds addresses. Never ask the recipient; the creator fills gaps.
 
