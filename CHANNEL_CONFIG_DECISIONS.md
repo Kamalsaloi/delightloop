@@ -22,7 +22,7 @@ Paper: page "Channel config redesign". Each row is one channel, prod on the left
 - Gift type is a dropdown with icons: One gift, or Delight choice (they pick 1 of up to 3).
 - Gifts are cards, three across. View all opens a modal with search and sort by price.
 - Everything comes from the preset. The step shows gift, postcard and sticker read-only, marked "From preset".
-- The step's "How they get it" is Preset or Personal choice (Soon), never One gift vs Delight choice.
+- The step's "How they get it" comes first: Preset or Personal choice (Soon), never One gift vs Delight choice. The preset dropdown follows.
 - On-demand gifts are labelled and charged at launch.
 - No gift descriptions; the photo says enough.
 
