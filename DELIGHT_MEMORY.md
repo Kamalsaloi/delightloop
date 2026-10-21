@@ -9,6 +9,7 @@ Short product truths. One line each.
 - Preset = One gift, or Delight choice (recipient picks 1 of up to 3, min 2).
 - Everything comes from a preset. A step only picks among its preset's gifts; no "All gifts".
 - Need another gift? Edit the preset or switch presets.
+- Sticker comes from the preset only; a step can't change it.
 - Gifty finds addresses. Never ask the recipient; the creator fills gaps.
 
 ## Letters
