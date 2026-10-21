@@ -11,6 +11,13 @@ Short product truths. One line each.
 - Need another gift? Edit the preset or switch presets.
 - Gifty finds addresses. Never ask the recipient; the creator fills gaps.
 
+## Letters
+- 3 templates: Brand envelope, Postcard, Signed postcard. No "V2" in names.
+- Signer only for Signed postcard: a workspace member (with photo) or someone else (name + title).
+- Titles: preset list plus "Other" to type one.
+- Sticker is optional: a checkbox reveals the stickers. No "No sticker" tile.
+- No return address in the letter preset.
+
 ## Money
 - Everything is paid from the wallet.
 - On-demand gifts are charged at launch, before we buy them.
