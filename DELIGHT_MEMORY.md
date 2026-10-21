@@ -1,36 +1,30 @@
 # Delight memory
 
-Product truths for DelightLoop, as we learn them. Design from these; don't re-ask them. Newest additions go in their section, not at the bottom.
+Short product truths. One line each.
 
-## Gifts and stock
-
-- **In stock** gifts sit in our warehouses and ship fast (24h–3 days).
-- **On demand** gifts are not in stock. We procure them only after someone sends one, so they take longer. Label them "On demand" with their lead time on every gift card; never hide them behind "In stock only" by default.
-- A gift preset is **One gift** (everyone gets the same) or **Delight choice** (the recipient picks 1 of up to 3). Delight choice needs at least 2 gifts to be a choice.
-- Gifty finds every recipient's address. Never ask the recipient for it; if Gifty can't find one, the campaign creator adds it.
+## Gifts
+- In stock: in our warehouses, ships in 24h–3 days.
+- On demand: not in stock; we buy it after it's sent. Label it "On demand".
+- Don't hide on-demand gifts by default ("In stock only" starts off).
+- Preset = One gift, or Delight choice (recipient picks 1 of up to 3, min 2).
+- Gifty finds addresses. Never ask the recipient; the creator fills gaps.
 
 ## Money
+- Everything is paid from the wallet.
+- On-demand gifts are charged at launch, before we buy them.
+- Wallet too low at launch → blocked, "Top up $X" fix card.
+- Letters and gifts are priced separately; show separate lines.
+- Presets show per-gift price only; totals live in the play.
 
-- Everything is paid from the company **wallet**.
-- **On-demand gifts are paid upfront**: the wallet is charged at launch, before we procure and ship. If the wallet can't cover it, launch is blocked with a "Top up $X" fix card.
-- **Letters and gifts are paid differently** (separate pricing), so totals show them as separate lines, never one blended number.
-- A preset has no recipient count, so a preset only shows per-gift prices ("$80 each"). Totals appear in the play, where the audience is known.
-
-## Delivery dates
-
-- **Gift and letter steps both have three advanced fields in prod** (keep all three in every redesign, collapsed under "Advanced" with a one-line summary):
-  - **Reach on** ("Arrive by" in the redesign): the parcel should land by this day. We work out the logistics (procurement + warehouse + transit per address).
-  - **Deadline date** ("Don't send after"): a cut-off. Anyone who reaches the step after it skips that step, moves on, and isn't charged.
-  - **Note**: goes to the warehouse with every parcel in the step (gift wrap, envelope, no invoice). Recipients never see it.
-- **Current scope: keep it simple.** Two date fields side by side plus the note; an empty date means off; past dates are disabled in the pickers. No edge-case handling in the UI for now ("Gift step · Advanced (simple)" in Paper).
-- **Parked for later** (designed in Paper as "Gift step / Letter step · Advanced (expanded)", not in scope): what happens when the date can't be met. Letters can't be swapped or sent as an e-gift, so a late letter would only offer express post, ship anyway, or skip. The gift flow:
-  1. **Prevent it.** The date picker greys out dates nobody can reach (before the earliest arrival for anyone) and shows when everyone can have it ("Earliest: 27 Oct · everyone by 4 Nov").
-  2. **Split, don't block.** "21 of 24 arrive by Oct 30 · 3 need until Nov 4". For those few: swap to a faster gift, send an instant e-gift, ship anyway (arrives late), skip them, or move the date. Show faster shipping with its price when it would make the date.
-  3. **A default for the unattended case**, set in advanced settings: "If a gift can't arrive in time" → swap to the fastest in-stock gift · send an e-gift · ship anyway and tell me · skip.
-  4. **After launch**, a slip (procurement or carrier) raises a fix card with the same choices. Never swap a gift silently.
+## Gift and letter steps · Advanced
+- Prod has 3 fields: Reach on, Deadline date, Note. Keep all 3.
+- Reach on = "Arrive by": should land by this day.
+- Deadline date = "Don't send after": later arrivals skip the step, no charge.
+- Note: for the warehouse, every parcel. Recipients never see it.
+- For now: empty date = off, past dates disabled. No edge cases.
+- Later (parked): split people who can't make the date; letters only get express, ship anyway, skip.
 
 ## The loop
-
-- People who book a meeting early exit the loop and get no gift.
-- Gift reasons cite real signals (LinkedIn, X, the behavioural profile), not LinkedIn alone.
-- In a draft, never show numbers only knowable after running (opens, replies); show known-upfront ones (audience size, addresses found, cost).
+- Booking a meeting early exits the loop; no gift.
+- Gift reasons cite real signals (LinkedIn, X, behaviour).
+- Drafts show only known-upfront numbers (people, addresses, cost).
