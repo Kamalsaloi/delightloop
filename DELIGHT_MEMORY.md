@@ -20,6 +20,7 @@ Short product truths. One line each.
 - No workspace members → "Add member" takes them to the members page.
 - Sticker is optional: a checkbox reveals the stickers. No "No sticker" tile.
 - No return address in the letter preset.
+- Letter step has no Preview tab: you type on the card, so the card is the preview.
 
 ## Email
 - Picking a person uses all their mailboxes.
