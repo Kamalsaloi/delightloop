@@ -18,7 +18,11 @@ Product truths for DelightLoop, as we learn them. Design from these; don't re-as
 
 ## Delivery dates
 
-- The gift step has an advanced **"Arrive by"** date: the gift should reach each person by then. We work out the logistics (procurement + warehouse + transit per address).
+- **Gift and letter steps both have three advanced fields in prod** (keep all three in every redesign, collapsed under "Advanced" with a one-line summary):
+  - **Reach on** ("Arrive by" in the redesign): the parcel should land by this day. We work out the logistics (procurement + warehouse + transit per address).
+  - **Deadline date** ("Don't send after"): a cut-off. Anyone who reaches the step after it skips that step, moves on, and isn't charged.
+  - **Note**: goes to the warehouse with every parcel in the step (gift wrap, envelope, no invoice). Recipients never see it.
+- Letters can't be swapped or sent as an e-gift, so a letter that can't make the date only offers: express post, ship anyway, or skip.
 - When the date can't be met:
   1. **Prevent it.** The date picker greys out dates nobody can reach (before the earliest arrival for anyone) and shows when everyone can have it ("Earliest: 27 Oct · everyone by 4 Nov").
   2. **Split, don't block.** "21 of 24 arrive by Oct 30 · 3 need until Nov 4". For those few: swap to a faster gift, send an instant e-gift, ship anyway (arrives late), skip them, or move the date. Show faster shipping with its price when it would make the date.
