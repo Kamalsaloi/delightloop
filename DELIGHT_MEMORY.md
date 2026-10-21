@@ -21,9 +21,16 @@ Short product truths. One line each.
 
 ## Email
 - Picking a person uses all their mailboxes.
-- Inactive people can't send; show "Inactive", can't be picked.
+- Inactive people can be picked: they send manually from that account, or make it active.
+- Senders list groups: Picked, Active, Inactive; each group gets View all when long.
 - Senders can be zero: export the emails + details after the play runs, send manually.
-- Sending window: workspace window by default; Modify sets one per config.
+- Sending window: workspace window selected by default; Custom sets one per config.
+
+## LinkedIn
+- Same senders rules as email (inactive pickable, zero allowed, manual export).
+- Actions: Invite, Message, InMail, React, Comment. Follow and Visit not available yet.
+- React and Comment wait for a person's approval and need Engagement on in Settings.
+- Daily caps live in Settings, Budget: 6 invites, 30 messages, 10 reactions, 3 comments.
 
 ## Money
 - Everything is paid from the wallet.
