@@ -22,8 +22,8 @@ Product truths for DelightLoop, as we learn them. Design from these; don't re-as
   - **Reach on** ("Arrive by" in the redesign): the parcel should land by this day. We work out the logistics (procurement + warehouse + transit per address).
   - **Deadline date** ("Don't send after"): a cut-off. Anyone who reaches the step after it skips that step, moves on, and isn't charged.
   - **Note**: goes to the warehouse with every parcel in the step (gift wrap, envelope, no invoice). Recipients never see it.
-- Letters can't be swapped or sent as an e-gift, so a letter that can't make the date only offers: express post, ship anyway, or skip.
-- When the date can't be met:
+- **Current scope: keep it simple.** Two date fields side by side plus the note; an empty date means off; past dates are disabled in the pickers. No edge-case handling in the UI for now ("Gift step · Advanced (simple)" in Paper).
+- **Parked for later** (designed in Paper as "Gift step / Letter step · Advanced (expanded)", not in scope): what happens when the date can't be met. Letters can't be swapped or sent as an e-gift, so a late letter would only offer express post, ship anyway, or skip. The gift flow:
   1. **Prevent it.** The date picker greys out dates nobody can reach (before the earliest arrival for anyone) and shows when everyone can have it ("Earliest: 27 Oct · everyone by 4 Nov").
   2. **Split, don't block.** "21 of 24 arrive by Oct 30 · 3 need until Nov 4". For those few: swap to a faster gift, send an instant e-gift, ship anyway (arrives late), skip them, or move the date. Show faster shipping with its price when it would make the date.
   3. **A default for the unattended case**, set in advanced settings: "If a gift can't arrive in time" → swap to the fastest in-stock gift · send an e-gift · ship anyway and tell me · skip.
