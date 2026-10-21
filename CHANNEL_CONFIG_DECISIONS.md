@@ -3,6 +3,7 @@
 Paper: page "Channel config redesign". Each row is one channel, prod on the left, redesign on the right, states sheet last.
 
 ## Across all panels
+- In every row, Add comes first, then Edit, then the other states, then the states sheet.
 - Same right panel everywhere: filled channel tile, body, pinned footer with a summary, Cancel and Save.
 - Every clickable thing has a states sheet: rest, hover, pressed, disabled, plus selected, focus, open.
 - Long lists show a few, with View all and Collapse at the top right of the list.
@@ -25,6 +26,7 @@ Paper: page "Channel config redesign". Each row is one channel, prod on the left
 - No gift descriptions; the photo says enough.
 
 ## Letter preset
+- Order: Name, Template, Signed by, Sticker. The signature is part of the card, so it follows the template.
 - Three templates: Brand envelope, Postcard, Signed postcard. No "V2".
 - Each template has a thumbnail; the picked one shows a full sample.
 - Stickers show only once "Add a sticker" is ticked. No "No sticker" tile.
@@ -35,7 +37,8 @@ Paper: page "Channel config redesign". Each row is one channel, prod on the left
 
 ## Email config
 - Email senders is one card: search, Picked, Active, Inactive, and Add sender as the last row.
-- Picking a person uses all their mailboxes.
+- Picking a person uses all their mailboxes. Clicking the mailbox count lists their addresses.
+- Add sender is the last row of the list and opens the mailboxes page (arrow ↗).
 - Inactive people can be picked: send manually from that account, or make it active.
 - Zero senders is allowed: export the emails with details after the play runs, and send them yourself.
 - No mailboxes: two options, Add sender or Send them yourself.
